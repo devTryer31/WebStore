@@ -31,5 +31,8 @@ namespace WebStore.Controllers
 
 		public IActionResult Staff() => //http://localhost:5000/Home/Staff
 			View(__Staff);
+
+		public IActionResult Employee(int id) =>
+			View(__Staff[id]);
 	}
 }

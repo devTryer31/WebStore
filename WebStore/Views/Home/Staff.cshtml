@@ -17,6 +17,7 @@
         <th>Surname</th>
         <th>Patronymic</th>
         <th>Age</th>
+        <th>Profile page</th>
     </tr>
     </thead>
     <tbody>
@@ -26,6 +27,9 @@
             <td>@employee.Surname</td>
             <td>@employee.Patronymic</td>
             <td>@employee.Age</td>
+            <td>
+                <a href="/Home/Employee/@employee.Id">🛈</a>
+            </td>
         </tr>
     }
 
@@ -33,7 +37,7 @@
 </table>
     
 <footer>
-    <a href="/Home/Index">To main page</a>
+    <a href="/Home/Index">To main page ←</a>
 </footer>
 
 </body>
