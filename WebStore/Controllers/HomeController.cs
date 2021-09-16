@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using WebStore.Infrastructure.Enums;
 using WebStore.Models;
-using WebStore.Models.Enums;
 
 namespace WebStore.Controllers
 {
@@ -23,16 +23,24 @@ namespace WebStore.Controllers
 		public IActionResult Index() =>
 			View();
 
-		public IActionResult NewAction(int id) => // http://localhost:5000/Home/NewAction/5
-			Content($"New Action with id = {id}");
-
-		//public IActionResult NewAction() => // http://localhost:5000/Home/NewAction //It's throw exception.
-		//	Content("New Action without id");                                          //What solution?
+		public IActionResult NewAction(int? id)// http://localhost:5000/Home/NewAction/int?
+		{
+			if (id.HasValue)
+				return Content($"New Action with id = {id}");
+			return Content("New Action without id");
+		}
 
 		public IActionResult Staff() => //http://localhost:5000/Home/Staff
 			View(__Staff);
 
-		public IActionResult Employee(int id) =>
-			View(__Staff[id]);
+		public IActionResult Employee(int? id)
+		{
+			if (!id.HasValue)
+				return Content("The employee id is not specified.");
+
+			if (id >= __Staff.Count || id < 0)
+				return Content("Employee not found.");
+			return View(__Staff[id.Value]);
+		}
 	}
 }

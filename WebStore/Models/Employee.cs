@@ -1,9 +1,7 @@
-﻿using WebStore.Models.Enums;
+﻿using WebStore.Infrastructure.Enums;
 
 namespace WebStore.Models
 {
-	//Когда стоит использовать Record в качестве модели?
-
 	public sealed class Employee
 	{
 		public string Name { get; set; }

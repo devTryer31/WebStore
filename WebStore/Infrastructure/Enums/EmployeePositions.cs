@@ -1,11 +1,11 @@
-﻿namespace WebStore.Models.Enums
+﻿namespace WebStore.Infrastructure.Enums
 {
 	public enum EmployeePositions : ushort
 	{
 		Boss = 0,
 		Manager,
 		Programmer,
-		QAEngineer,
+		QaEngineer,
 		Cleaner
 	}
 }
