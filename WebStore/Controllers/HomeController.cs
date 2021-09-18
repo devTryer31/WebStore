@@ -23,12 +23,10 @@ namespace WebStore.Controllers
 		public IActionResult Index() =>
 			View();
 
-		public IActionResult NewAction(int? id)// http://localhost:5000/Home/NewAction/int?
-		{
-			if (id.HasValue)
-				return Content($"New Action with id = {id}");
-			return Content("New Action without id");
-		}
+		public IActionResult BlogSingle() =>
+			View();
+
+
 
 		public IActionResult Staff() => //http://localhost:5000/Home/Staff
 			View(__Staff);
