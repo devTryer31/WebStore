@@ -13,6 +13,32 @@
     {
       "library": "font-awesome@4.0.3",
       "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "animate.css@4.1.1",
+      "destination": "wwwroot/lib/animate/",
+      "files": [
+        "animate.css"
+      ]
+    },
+    {
+      "library": "bootstrap-slider@11.0.2",
+      "destination": "wwwroot/lib/price-range/"
+    },
+    {
+      "library": "prettyPhoto@3.1.6",
+      "destination": "wwwroot/lib/prettyPhoto/",
+      "files": [
+        "css/prettyPhoto.css",
+        "js/jquery.prettyPhoto.js"
+      ]
+    },
+    {
+      "library": "scrollup@2.4.1",
+      "destination": "wwwroot/lib/scrollup/",
+      "files": [
+        "jquery.scrollUp.min.js"
+      ]
     }
   ]
 }
