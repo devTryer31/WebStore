@@ -40,6 +40,9 @@ namespace WebStore.Controllers
 		
 		public IActionResult Login() =>
 			View();
+		
+		public IActionResult ProductDetails() =>
+			View();
 
 
 		public IActionResult Staff() => //http://localhost:5000/Home/Staff
