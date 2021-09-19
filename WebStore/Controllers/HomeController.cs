@@ -28,6 +28,9 @@ namespace WebStore.Controllers
 
 		public IActionResult BlogsList() =>
 			View();
+		
+		public IActionResult Cart() =>
+			View();
 
 
 		public IActionResult Staff() => //http://localhost:5000/Home/Staff
