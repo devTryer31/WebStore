@@ -37,6 +37,9 @@ namespace WebStore.Controllers
 		
 		public IActionResult ContactUs() =>
 			View();
+		
+		public IActionResult Login() =>
+			View();
 
 
 		public IActionResult Staff() => //http://localhost:5000/Home/Staff
