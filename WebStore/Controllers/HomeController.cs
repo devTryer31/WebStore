@@ -15,7 +15,7 @@ namespace WebStore.Controllers
 				Surname = $"Surname_{i}",
 				Patronymic = $"Patronymic_{i}",
 				Age = (ushort)(20 + 5 * i),
-				Id = (uint)i,
+				Id = i,
 				Position = (EmployeePositions)i,
 				Score = (uint)(20 + 17 * i)
 			}).ToList();

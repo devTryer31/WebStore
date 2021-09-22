@@ -1,8 +1,9 @@
 ﻿using WebStore.Infrastructure.Enums;
+using WebStore.Models.Interfaces;
 
 namespace WebStore.Models
 {
-	public sealed class Employee
+	public sealed class Employee : IEntity
 	{
 		public string Name { get; set; }
 
@@ -12,7 +13,7 @@ namespace WebStore.Models
 
 		public ushort Age { get; set; }
 
-		public uint Id { get; set; }
+		public int Id { get; set; }
 
 		public EmployeePositions Position { get; set; }
 
