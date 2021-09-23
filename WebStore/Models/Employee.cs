@@ -1,8 +1,10 @@
-﻿using WebStore.Infrastructure.Enums;
+﻿using System;
+using WebStore.Infrastructure.Enums;
 using WebStore.Models.Interfaces;
 
 namespace WebStore.Models
 {
+	[Serializable]
 	public sealed class Employee : IEntity
 	{
 		public string Name { get; set; }

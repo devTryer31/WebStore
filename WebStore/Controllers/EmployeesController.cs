@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 using WebStore.Infrastructure.Enums;
 using WebStore.Models;
 using WebStore.Services.Interfaces;
@@ -15,11 +18,19 @@ namespace WebStore.Controllers
 	{
 		private readonly IRepository<Employee> _EmployeesData;
 		private readonly ILogger<EmployeesController> _Logger;
+		private readonly IConfiguration _Configuration;
 
-		public EmployeesController(IRepository<Employee> EmployeesData, ILogger<EmployeesController> Logger)
+		public EmployeesController(IRepository<Employee> EmployeesData, ILogger<EmployeesController> Logger, IConfiguration Configuration)
 		{
 			_EmployeesData = EmployeesData;
 			_Logger = Logger;
+			_Configuration = Configuration;
+		}
+
+		private async void SaveChanges()
+		{
+			await using FileStream fs = new(_Configuration["EmployeesDbFilePath"], FileMode.Create);
+			await JsonSerializer.SerializeAsync(fs, new List<Employee>(_EmployeesData.GetAll()));
 		}
 
 		public IActionResult Index() => View(_EmployeesData.GetAll());
@@ -79,6 +90,8 @@ namespace WebStore.Controllers
 			else
 				_EmployeesData.Update(employee);
 
+			SaveChanges();
+
 			return RedirectToAction(nameof(Index));
 		}
 
@@ -112,6 +125,9 @@ namespace WebStore.Controllers
 		public IActionResult RemoveConfirmed(int id)
 		{
 			_EmployeesData.Remove(_EmployeesData.Get(id));
+
+			SaveChanges();
+
 			return RedirectToAction(nameof(Index));
 		}
 
