@@ -8,13 +8,13 @@ namespace WebStore.Services
 	internal static class TestDataService
 	{
 		private static readonly List<Employee> _Data =
-			Enumerable.Range(0, 5).Select(x =>
+			Enumerable.Range(1, 7).Select(x =>
 				new Employee
 				{
 					Name = $"Name_{x}",
 					Surname = $"Surname_{x}",
 					Patronymic = $"Patronymic_{x}",
-					Age = (ushort) x,
+					Age = (ushort) (20+x*2),
 					Id = x,
 					Position = (EmployeePositions)x,
 					Score = (uint) (100+x*x)

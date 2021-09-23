@@ -3,7 +3,7 @@ using WebStore.Models.Interfaces;
 
 namespace WebStore.Services.Interfaces
 {
-	interface IRepository<T> where T : IEntity
+	public interface IRepository<T> where T : IEntity
 	{
 		void Add(T item);
 

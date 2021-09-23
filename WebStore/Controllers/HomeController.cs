@@ -46,19 +46,5 @@ namespace WebStore.Controllers
 		
 		public IActionResult Shop() =>
 			View();
-
-
-		public IActionResult Staff() => //http://localhost:5000/Home/Staff
-			View(__Staff);
-
-		public IActionResult Employee(int? id)
-		{
-			if (!id.HasValue)
-				return Content("The employee id is not specified.");
-
-			if (id >= __Staff.Count || id < 0)
-				return Content("Employee not found.");
-			return View(__Staff[id.Value]);
-		}
 	}
 }
