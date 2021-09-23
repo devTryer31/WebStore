@@ -43,7 +43,8 @@ namespace WebStore.Services.Base
 		public void Update(T item)
 		{
 			if (item == null) throw new ArgumentNullException(nameof(item));
-			var dbItem = this.Get(item.Id);
+			var dbItem = Get(item.Id);
+			if (dbItem is null) return;
 			UpdateItem(item, dbItem);
 		}
 
@@ -51,9 +52,8 @@ namespace WebStore.Services.Base
 
 		public T Get(int id)
 		{
-			if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id), "Id must be a positive number.");
+			//if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id), "Id must be a positive number.");
 			var source = _Data.SingleOrDefault(x => x.Id == id);
-			if (source is null) throw new InvalidOperationException($"Item with id = {id} is missing in the database.");
 			return source;
 		}
 

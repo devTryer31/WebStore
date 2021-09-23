@@ -37,16 +37,19 @@ namespace WebStore.Controllers
 			return View(employee);
 		}
 
-		public IActionResult Add() => View();
+		//public IActionResult Add() => View(); // in /Edit/[id = null].
 
 		#region Edit
 
-		public IActionResult Edit(int id)
+		public IActionResult Edit(int? id)
 		{
-			var employee = _EmployeesData.Get(id);
-			if (employee is null) return NotFound();
-			EmployeeViewModel viewModel = new EmployeeViewModel
-			{
+			if (id is null) // If we adding new employee.
+				return View(new EmployeeViewModel()); //Fill the empty ViewModel.
+
+			var employee = _EmployeesData.Get(id.Value);
+			if (employee is null)
+				return NotFound();
+			EmployeeViewModel viewModel = new EmployeeViewModel {
 				Name = employee.Name,
 				Surname = employee.Surname,
 				Patronymic = employee.Patronymic,
@@ -61,8 +64,7 @@ namespace WebStore.Controllers
 		[HttpPost]
 		public IActionResult Edit(EmployeeViewModel viewModel)
 		{
-			Employee employee = new Employee
-			{
+			Employee employee = new Employee {
 				Name = viewModel.Name,
 				Surname = viewModel.Surname,
 				Patronymic = viewModel.Patronymic,
@@ -72,7 +74,11 @@ namespace WebStore.Controllers
 				Score = viewModel.Score,
 			};
 
-			_EmployeesData.Update(employee);
+			if (employee.Id == 0) // If we adding new employee.
+				_EmployeesData.Add(employee);
+			else
+				_EmployeesData.Update(employee);
+
 			return RedirectToAction(nameof(Index));
 		}
 
@@ -82,13 +88,14 @@ namespace WebStore.Controllers
 
 		public IActionResult Remove(int id)
 		{
-			if (id < 0) return BadRequest();
+			if (id < 0)
+				return BadRequest();
 
 			var employee = _EmployeesData.Get(id);
-			if (employee is null) return NotFound();
+			if (employee is null)
+				return NotFound();
 
-			var vm = new EmployeeViewModel
-			{
+			var vm = new EmployeeViewModel {
 				Name = employee.Name,
 				Surname = employee.Surname,
 				Patronymic = employee.Patronymic,
