@@ -26,7 +26,11 @@
                         </a>|
                         <a asp-controller="Employees" asp-action="Edit" asp-route-id="@employee.Id">
                             <i class="fa fa-edit"></i>
+                        </a>|
+                        <a asp-controller="Employees" asp-action="Remove" asp-route-id="@employee.Id">
+                            delete
                         </a>
+
                     </td>
                 </tr>
             }

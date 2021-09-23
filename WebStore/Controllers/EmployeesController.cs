@@ -78,6 +78,36 @@ namespace WebStore.Controllers
 
 		#endregion
 
-		public IActionResult Remove() => View();
+		#region Remove actions
+
+		public IActionResult Remove(int id)
+		{
+			if (id < 0) return BadRequest();
+
+			var employee = _EmployeesData.Get(id);
+			if (employee is null) return NotFound();
+
+			var vm = new EmployeeViewModel
+			{
+				Name = employee.Name,
+				Surname = employee.Surname,
+				Patronymic = employee.Patronymic,
+				Age = employee.Age,
+				Id = employee.Id,
+				Position = employee.Position,
+				Score = employee.Score,
+			};
+
+			return View(vm);
+		}
+
+		[HttpPost]
+		public IActionResult RemoveConfirmed(int id)
+		{
+			_EmployeesData.Remove(_EmployeesData.Get(id));
+			return RedirectToAction(nameof(Index));
+		}
+
+		#endregion
 	}
 }
