@@ -4,7 +4,7 @@ using WebStore.Services.Interfaces;
 
 namespace WebStore.Services
 {
-	internal class ProductsAndBrandsLiteRepository : IProductsAndBrandsLiteRepository
+	public class ProductsAndBrandsLiteRepository : IProductsAndBrandsLiteRepository
 	{
 		public IEnumerable<Product> GetProducts() => TestDataService.Products;
 

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WebStore.Models.Interfaces
 {
-	public interface IEntity
+	public interface IEntity //TODO: Replace it with WebStore.Domain.Entities.Base.Interfaces.IEntity
 	{
 		int Id { get; set; }
 	}

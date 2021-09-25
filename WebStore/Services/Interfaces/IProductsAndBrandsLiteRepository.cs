@@ -6,7 +6,7 @@ using WebStore.Domain.Entities;
 
 namespace WebStore.Services.Interfaces
 {
-	internal interface IProductsAndBrandsLiteRepository
+	public interface IProductsAndBrandsLiteRepository
 	{
 		public IEnumerable<Product> GetProducts();
 
