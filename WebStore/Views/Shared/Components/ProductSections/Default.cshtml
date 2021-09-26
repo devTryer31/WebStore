@@ -6,7 +6,11 @@
         if (parent.Childs is null || parent.Childs.Capacity == 0) {
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title"><a href="#">@parent.Name</a></h4>
+                    <h4 class="panel-title">
+                        <a asp-controller="Catalog" asp-action="Index" asp-route-sectionId="@parent.Id">
+                            @parent.Name
+                        </a>
+                    </h4>
                 </div>
             </div>
         }
@@ -24,7 +28,11 @@
                     <div class="panel-body">
                         <ul>
                             @foreach (var child in parent.Childs) {
-                                <li><a href="#">@child.Name</a></li>
+                                <li>
+                                    <a asp-controller="Catalog" asp-action="Index" asp-route-sectionId="@child.Id">
+                                        @child.Name
+                                    </a>
+                                </li>
                             }
                         </ul>
                     </div>
