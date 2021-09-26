@@ -1,27 +1,41 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using WebStore.Domain;
 using WebStore.Infrastructure.Enums;
 using WebStore.Models;
+using WebStore.Services.Interfaces;
+using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
 	public class HomeController : Controller
 	{
+		private readonly IProductsAndBrandsLiteRepository _ProductsAndBrands;
 
-		private static readonly List<Employee> __Staff =
-			Enumerable.Range(0, 5).Select(i => new Employee {
-				Name = $"Name_{i}",
-				Surname = $"Surname_{i}",
-				Patronymic = $"Patronymic_{i}",
-				Age = (ushort)(20 + 5 * i),
-				Id = i,
-				Position = (EmployeePositions)i,
-				Score = (uint)(20 + 17 * i)
-			}).ToList();
+		public HomeController( IProductsAndBrandsLiteRepository productsAndBrands)
+		{
+			_ProductsAndBrands = productsAndBrands;
+		}
 
-		public IActionResult Index() =>
-			View();
+		public IActionResult Index(int? sectionId, int? brandId)
+		{
+			ProductsFilter filter = new() {
+				SectionId = sectionId,
+				BrandId = brandId
+			};
+
+			var viewProducts = _ProductsAndBrands.GetProducts(filter)
+				.Select(p => new ProductViewModel {
+					Id = p.Id,
+					Name = p.Name,
+					Price = p.Price,
+					ImgUrl = p.ImgUrl,
+
+				}).Take(6);
+
+			return View(viewProducts);
+		}
 
 		public IActionResult BlogSingle() =>
 			View();
