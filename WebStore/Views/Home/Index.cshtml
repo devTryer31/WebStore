@@ -1,13 +1,24 @@
-﻿<!DOCTYPE html>
+﻿@{
+    ViewData["Title"] = "Home | E-Shopper";
+}
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width"/>
-    <meta charset="UTF-8"/>
-    <title>WebStoreProject</title>
-</head>
-<body>
-    <h3>Первая странца WebStore</h3>
-    <a href="/Home/Staff">Перейти к списку сотрудников</a>
-</body>
-</html>
+<partial name="Partial/_Slider" />
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <partial name="Partial/_LeftSideBar" />
+            </div>
+
+            <div class="col-sm-9 padding-right">
+                <partial name="Partial/_ProductsList" />
+
+                <partial name="Partial/_CategoryTab" />
+
+                <partial name="Partial/_RecomendedItems" />
+
+            </div>
+        </div>
+    </div>
+</section>
