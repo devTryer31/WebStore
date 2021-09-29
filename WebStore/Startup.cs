@@ -25,6 +25,7 @@ namespace WebStore
 				app.UseDeveloperExceptionPage();
 			}
 
+			app.UseStatusCodePagesWithReExecute("/Error/Index/{0}");
 			app.UseStaticFiles();
 			app.UseRouting();
 
