@@ -20,11 +20,20 @@ namespace WebStore
 			Configuration = configuration;
 		}
 		
-		public void ConfigureServices(IServiceCollection services) {
-			services.AddSingleton<IRepository<Employee>, EmployeesRepository>()
-				.AddSingleton<IProductsAndBrandsLiteRepository, ProductsAndBrandsLiteRepository>()
-				.AddDbContext<WebStoreDb>(opt => 
-					opt.UseSqlServer(Configuration.GetConnectionString("SqlServer")));
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddSingleton<IRepository<Employee>, EmployeesRepository>();
+
+			services.AddDbContext<WebStoreDb>(opt =>
+			{
+				opt.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
+				//opt.EnableSensitiveDataLogging();
+			});
+
+			services.AddTransient<DbTestInitializer>();
+
+			services.AddScoped<IProductsAndBrandsLiteRepository, SqlProductData>();
+
 			services.AddControllersWithViews()
 				.AddRazorRuntimeCompilation()
 				;
