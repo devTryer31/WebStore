@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WebStore.Domain.Entities.Base;
 using WebStore.Domain.Entities.Base.Interfaces;
 
@@ -7,7 +8,7 @@ namespace WebStore.Domain.Entities
 	public class Product : NamedEntity, IOrderedEntity
 	{
 		public int Order { get; set; }
-
+		
 		public int SectionId { get; set; }
 
 		[ForeignKey(nameof(SectionId))]
