@@ -21,7 +21,7 @@ namespace WebStore.Components
 		{
 			var sections = _ProductsAndBrands.GetProductSections();
 
-			var parentSections = sections.Where(s => s.ParentId is null);
+			var parentSections = sections.Where(s => s.ParentId is null).ToList();
 
 			return View(parentSections.Select(ps => new ProductSectionsViewModel
 				{

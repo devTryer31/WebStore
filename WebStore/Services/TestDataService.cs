@@ -15,10 +15,10 @@ namespace WebStore.Services
 		static TestDataService()
 		{
 			//Bad practice. It must be received from appsetting.json
-			const string dbPath = "Data/TextFiles/StaffData.json";
-			if (new FileInfo(dbPath).Exists)
+			const string fileDbPath = "Data/TextFiles/StaffData.json";
+			if (new FileInfo(fileDbPath).Exists)
 			{
-				using var fs = new FileStream(dbPath, FileMode.Open);
+				using var fs = new FileStream(fileDbPath, FileMode.Open);
 				_Data = JsonSerializer.DeserializeAsync<List<Employee>>(fs).Result;
 			}
 			else
@@ -98,7 +98,7 @@ namespace WebStore.Services
             new Product { Id = 10, Name = "Женские джинсы", Price = 1025, ImgUrl = "product10.jpg", Order = 9, SectionId = 25, BrandId = 3 },
             new Product { Id = 11, Name = "Джинсы женские", Price = 1025, ImgUrl = "product11.jpg", Order = 10, SectionId = 25, BrandId = 3 },
             new Product { Id = 12, Name = "Летний костюм", Price = 1025, ImgUrl = "product12.jpg", Order = 10, SectionId = 24, BrandId = 3 },
-            new Product { Id = 12, Name = "Летняя сумка Rosch", Price = 1025, ImgUrl = "product12.jpg", Order = 11, SectionId = 24, BrandId = 7 },
+            new Product { Id = 13, Name = "Летняя сумка Rosch", Price = 1025, ImgUrl = "product12.jpg", Order = 11, SectionId = 24, BrandId = 7 },
         };
    }
 }

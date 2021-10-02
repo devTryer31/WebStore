@@ -1,17 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace WebStore.Controllers
 {
 	public class ErrorController : Controller
 	{
-		public new ActionResult NotFound()
+		[Route("Error/Index/{errorCode:int}")]
+		public IActionResult Index(int errorCode) =>
+			errorCode switch {
+				404 => RedirectToAction(nameof(NotFound)),
+				_ => Content($"Error code: {errorCode}. Sorry :("),
+			};
+
+		public new IActionResult NotFound()
 		{
-			Response.StatusCode = 404;
 			return View();
 		}
-   }
+	}
 }
