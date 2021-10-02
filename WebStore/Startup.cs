@@ -11,7 +11,9 @@ namespace WebStore
 	public class Startup
 	{
 		public void ConfigureServices(IServiceCollection services) {
-			services.AddSingleton<IRepository<Employee>, EmployeesRepository>();
+			services.AddSingleton<IRepository<Employee>, EmployeesRepository>()
+				.AddSingleton<IProductsAndBrandsLiteRepository, ProductsAndBrandsLiteRepository>()
+				;
 			services.AddControllersWithViews()
 				.AddRazorRuntimeCompilation()
 				;
