@@ -2,14 +2,20 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebStore.Models;
+using WebStore.Services.Interfaces;
+using WebStore.Services;
 
 namespace WebStore
 {
 	public class Startup
 	{
-		public void ConfigureServices(IServiceCollection services) =>
+		public void ConfigureServices(IServiceCollection services) {
+			services.AddSingleton<IRepository<Employee>, EmployeesRepository>();
 			services.AddControllersWithViews()
-				.AddRazorRuntimeCompilation();
+				.AddRazorRuntimeCompilation()
+				;
+		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
@@ -19,7 +25,6 @@ namespace WebStore
 
 			app.UseStaticFiles();
 			app.UseRouting();
-
 
 			app.UseEndpoints(endpoints =>
 			{

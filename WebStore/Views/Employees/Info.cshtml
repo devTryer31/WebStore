@@ -1,15 +1,8 @@
 ﻿@model WebStore.Models.Employee
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Employee Id@{@Model.Id}</title>
-</head>
-<body>
+<body class="container">
     <header>
-        <a href="/Home/Staff">Go back ←</a>
+        <a asp-controller="Employees" asp-action="Index">Go back ←</a>
         <h2>Employee Id[@Model.Id]</h2>
     </header>
 
@@ -24,8 +17,5 @@
     <p>Score: <span>@Model.Score</span></p>
     <hr />
     <p>Position: <span>@Model.Position</span></p>
-
-
-
+    <hr />
 </body>
-</html>

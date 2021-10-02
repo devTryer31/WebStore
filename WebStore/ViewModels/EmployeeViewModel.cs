@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using WebStore.Infrastructure.Enums;
-using WebStore.Models.Interfaces;
 
-namespace WebStore.Models
+namespace WebStore.ViewModels
 {
-	[Serializable]
-	public sealed class Employee : IEntity
+	public class EmployeeViewModel
 	{
 		public string Name { get; set; }
 

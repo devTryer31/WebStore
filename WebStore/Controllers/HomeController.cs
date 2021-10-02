@@ -15,7 +15,7 @@ namespace WebStore.Controllers
 				Surname = $"Surname_{i}",
 				Patronymic = $"Patronymic_{i}",
 				Age = (ushort)(20 + 5 * i),
-				Id = (uint)i,
+				Id = i,
 				Position = (EmployeePositions)i,
 				Score = (uint)(20 + 17 * i)
 			}).ToList();
@@ -46,19 +46,5 @@ namespace WebStore.Controllers
 		
 		public IActionResult Shop() =>
 			View();
-
-
-		public IActionResult Staff() => //http://localhost:5000/Home/Staff
-			View(__Staff);
-
-		public IActionResult Employee(int? id)
-		{
-			if (!id.HasValue)
-				return Content("The employee id is not specified.");
-
-			if (id >= __Staff.Count || id < 0)
-				return Content("Employee not found.");
-			return View(__Staff[id.Value]);
-		}
 	}
 }
