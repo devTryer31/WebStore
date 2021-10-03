@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebStore.ViewModels.Identity
@@ -17,7 +18,23 @@ namespace WebStore.ViewModels.Identity
 		[Display(Name = "Запомнить меня")]
 		public bool IsRememberMe { get; set; }
 
+		private string _ReturnUrl;
+
 		[HiddenInput(DisplayValue = false)]
-		public string ReturnUrl { get; set; }
+		public string ReturnUrl
+		{
+			get;
+			set;
+			//get
+			//{
+			//	Console.WriteLine($"get [{_ReturnUrl}]");
+			//	return _ReturnUrl;
+			//}
+			//set
+			//{
+			//	Console.WriteLine($"set [{value}]");
+			//	_ReturnUrl = value;
+			//}
+		}
 	}
 }

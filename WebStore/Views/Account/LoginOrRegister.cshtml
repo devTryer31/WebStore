@@ -8,12 +8,12 @@
         <!--form-->
         <div class="container">
             <div class="row">
+                <div asp-validation-summary="ModelOnly"></div>
                 <div class="col-sm-4 col-sm-offset-1">
                     <div class="login-form">
                         <!--login form-->
                         <h2>Вход в аккаунт</h2>
-                        <form asp-action="Login" asp-antiforgery="true"  asp-route-ReturnUrl="@Model.LoginViewModel.ReturnUrl">
-                            <div asp-validation-summary="ModelOnly"></div>
+                        <form asp-action="Login" asp-antiforgery="true" asp-route-returnurl="@Model.LoginViewModel.ReturnUrl">
 
 
                             <input asp-for="LoginViewModel.Name" placeholder="Логин" />
@@ -38,7 +38,6 @@
                         <!--sign up form-->
                         <h2>Регистрация нового пользователя</h2>
                         <form asp-action="Register" asp-antiforgery="true">
-                            <div asp-validation-summary="ModelOnly"></div>
 
 
                             <input asp-for="RegisterViewModel.Name" placeholder="Логин" />

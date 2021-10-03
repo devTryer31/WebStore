@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using WebStore.Domain.Entities.Identity;
 using WebStore.ViewModels.Identity;
@@ -21,7 +20,7 @@ namespace WebStore.Controllers
 		}
 
 		public IActionResult LoginOrRegister(string returnUrl) => View(_view,
-			new LoginOrRegisterViewModel { LoginViewModel = new() { ReturnUrl = returnUrl } });
+			new LoginOrRegisterViewModel { LoginViewModel = new() { ReturnUrl = returnUrl/*Request.Headers["Referer"].ToString()*/ } });
 
 		#region Register
 
@@ -36,7 +35,7 @@ namespace WebStore.Controllers
 			    loginModel.Name is not null || loginModel.Password is not null)//need js lock second form while filling.
 				return View(_view, model);
 
-			User user = new User {
+			User user = new() {
 				UserName = registerModel.Name,
 			};
 
@@ -78,7 +77,7 @@ namespace WebStore.Controllers
 				false);
 
 			if (login_result.Succeeded)
-				return LocalRedirect(loginModel.ReturnUrl); //Check is own url or not for security.
+				return LocalRedirect(loginModel.ReturnUrl ?? "/"); //Check is own url or not for security.
 
 
 			ModelState.AddModelError("", "Неверный логин или пароль.");
