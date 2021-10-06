@@ -362,3 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 **/wwwroot/lib
+**/wwwroot/js/composedScripts.min.js
+**/wwwroot/js/composedScripts.js
+**/wwwroot/css/composedStyels.min.css.gz
+**/wwwroot/css/composedStyels.min.css
+**/wwwroot/css/composedStyels.css
