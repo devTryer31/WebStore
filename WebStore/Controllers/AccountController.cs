@@ -48,6 +48,7 @@ namespace WebStore.Controllers
 				return View(_view, model);
 			}
 
+			await _UserManager.AddToRoleAsync(user, Role.Users);
 			await _SignInManager.SignInAsync(user, true);
 			return RedirectToAction("Index", "Home");
 		}
