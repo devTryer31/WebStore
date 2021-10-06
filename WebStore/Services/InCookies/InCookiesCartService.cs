@@ -1,7 +1,10 @@
 ﻿using System.Linq;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Filters;
+using WebStore.Domain;
 using WebStore.Domain.Entities;
+using WebStore.Infrastructure.Extensions;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 
@@ -114,7 +117,23 @@ namespace WebStore.Services.InCookies
 		{
 			var cart = Cart;
 
-			return null;
+			var item_to_amount_dct = cart.Items.ToDictionary(p => p.ProductId, p=>p.Amount);
+
+			var filter = new ProductsFilter()
+			{
+				ProductsId = item_to_amount_dct.Keys.ToList(),
+			};
+
+			var products_in_cart = _ProductsAndBrands.GetProducts(filter);
+
+			CartViewModel result = new()
+			{
+				Items = products_in_cart.Select(
+					p => (p.ToView(), item_to_amount_dct[p.Id]))
+			};
+
+
+			return result;
 		}
 	}
 }
