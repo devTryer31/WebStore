@@ -1,10 +1,13 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebStore.DAL.Context;
+using WebStore.Domain.Entities.Identity;
 using WebStore.Models;
 using WebStore.Services.Interfaces;
 using WebStore.Services;
@@ -30,6 +33,38 @@ namespace WebStore
 				//opt.EnableSensitiveDataLogging();
 			});
 
+			services.AddIdentity<User, Role>()
+				.AddEntityFrameworkStores<WebStoreDb>()
+				.AddDefaultTokenProviders();
+
+			services.Configure<IdentityOptions>(opt =>
+			{
+
+#if DEBUG
+				opt.Password.RequireDigit = false;
+				opt.Password.RequireLowercase = false;
+				opt.Password.RequireNonAlphanumeric = false;
+				opt.Password.RequireUppercase = false;
+				opt.Password.RequiredLength = 3;
+#endif
+				opt.User.RequireUniqueEmail = false;
+				opt.Lockout.AllowedForNewUsers = false;
+			});
+
+			services.ConfigureApplicationCookie(opt =>
+			{
+				opt.Cookie.Name = "WebStore-GV";
+				opt.Cookie.HttpOnly = true;
+
+				opt.ExpireTimeSpan = TimeSpan.FromDays(30);
+
+				opt.LoginPath = "/Account/LoginOrRegister";
+				opt.LogoutPath = "/Account/Logout";
+				opt.AccessDeniedPath = "/Account/AccessDenied";
+
+				opt.SlidingExpiration = true;//For security.
+			});
+
 			services.AddTransient<DbTestInitializer>();
 
 			services.AddScoped<IProductsAndBrandsLiteRepository, SqlProductData>();
@@ -48,6 +83,9 @@ namespace WebStore
 			app.UseStatusCodePagesWithReExecute("/Error/Index/{0}");
 			app.UseStaticFiles();
 			app.UseRouting();
+
+			app.UseAuthentication();
+			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
 			{

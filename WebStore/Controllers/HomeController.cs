@@ -51,9 +51,9 @@ namespace WebStore.Controllers
 		
 		public IActionResult ContactUs() =>
 			View();
-		
+
 		public IActionResult Login() =>
-			View();
+			Redirect("/Account/LoginOrRegister");
 		
 		public IActionResult ProductDetails() =>
 			View();
