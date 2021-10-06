@@ -10,7 +10,7 @@ namespace WebStore.Services.Interfaces
 
 	    void Remove(int id);
 
-	    void Clear(int id);
+	    void Clear();
 
 		 CartViewModel GetViewModel();
     }

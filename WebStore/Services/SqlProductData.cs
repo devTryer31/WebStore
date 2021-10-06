@@ -20,6 +20,10 @@ namespace WebStore.Services
 				.Include(p => p.Section)
 				.Include(p => p.Brand);
 
+			if (filter?.ProductsId is not null)
+				if (filter.ProductsId.Any())
+					return products.Where(p => filter.ProductsId.Contains(p.Id));
+
 			if (filter?.BrandId is not null)
 				products = products.Where(p => p.BrandId == filter.BrandId);
 

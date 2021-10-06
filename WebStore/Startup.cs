@@ -11,6 +11,7 @@ using WebStore.Domain.Entities.Identity;
 using WebStore.Models;
 using WebStore.Services.Interfaces;
 using WebStore.Services;
+using WebStore.Services.InCookies;
 
 namespace WebStore
 {
@@ -68,6 +69,7 @@ namespace WebStore
 			services.AddTransient<DbTestInitializer>();
 
 			services.AddScoped<IProductsAndBrandsLiteRepository, SqlProductData>();
+			services.AddScoped<ICartService, InCookiesCartService>();
 
 			services.AddControllersWithViews()
 				.AddRazorRuntimeCompilation()
