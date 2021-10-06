@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain;
 using WebStore.Infrastructure.Enums;
+using WebStore.Infrastructure.Extensions;
 using WebStore.Models;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
@@ -26,13 +27,7 @@ namespace WebStore.Controllers
 			};
 
 			var viewProducts = _ProductsAndBrands.GetProducts(filter)
-				.Select(p => new ProductViewModel {
-					Id = p.Id,
-					Name = p.Name,
-					Price = p.Price,
-					ImgUrl = p.ImgUrl,
-
-				}).Take(6);
+				.ToViewEnumerable().Take(6);
 
 			return View(viewProducts);
 		}

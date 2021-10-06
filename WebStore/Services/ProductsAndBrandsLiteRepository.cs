@@ -24,5 +24,7 @@ namespace WebStore.Services
 		public IEnumerable<Brand> GetBrands() => TestDataService.Brands;
 
 		public IEnumerable<ProductSection> GetProductSections() => TestDataService.ProductSections;
+
+		public Product GetProductById(int id) => TestDataService.Products.FirstOrDefault(p => p.Id == id);
 	}
 }
