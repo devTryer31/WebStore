@@ -1,4 +1,4 @@
-﻿@model CartViewModel
+﻿@model CartAndOrderViewModel
 @{
     ViewData["Title"] = "Корзина | E-Shopper";
 }
@@ -26,7 +26,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var (product, amount) in Model.Items) {
+                            @foreach (var (product, amount) in Model.Cart.Items) {
 
                                 <tr>
                                     <td class="cart_product">
@@ -131,7 +131,7 @@
                                 @*<li>Подитог <span>$59</span></li>
                                 <li>Эко-сбор <span>$2</span></li>*@
                                 <li>Стоимость доставки <span>Free</span></li>
-                                <li>Итого <span>@Model.TotalPrice.ToString("C")</span></li>
+                                <li>Итого <span>@Model.Cart.TotalPrice.ToString("C")</span></li>
                             </ul>
                             <a class="btn btn-default update" href="">Обновить</a>
                             <a class="btn btn-default check_out" href="">Оформить заказ</a>

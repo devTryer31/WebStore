@@ -26,7 +26,7 @@ namespace WebStore.Services
 			_UserManager = userManager;
 		}
 
-		public async Task<IEnumerable<Order>> GetUserOrder(int userId)
+		public async Task<IEnumerable<Order>> GetUserOrderAsync(int userId)
 		{
 			var orders = await _Db.Orders
 				.Include(o => o.Сustomer)
@@ -36,7 +36,7 @@ namespace WebStore.Services
 			return orders;
 		}
 
-		public async Task<Order> GetOrderById(int id)
+		public async Task<Order> GetOrderByIdAsync(int id)
 		{
 			return await _Db.Orders
 				.Include(o => o.Сustomer)
@@ -45,7 +45,7 @@ namespace WebStore.Services
 				.FirstOrDefaultAsync(o => o.Id == id).ConfigureAwait(false);
 		}
 
-		public async Task<Order> CreateOrder(string userName, CartViewModel cart, OrderViewModel orderViewModel)
+		public async Task<Order> CreateOrderAsync(string userName, CartViewModel cart, OrderViewModel orderViewModel)
 		{
 			var user = await _UserManager.FindByNameAsync(userName).ConfigureAwait(false);
 			if (user is null)

@@ -10,10 +10,10 @@ namespace WebStore.Services.Interfaces
 {
     public interface IOrderService
     {
-	    Task<IEnumerable<Order>> GetUserOrder(int userId);
+	    Task<IEnumerable<Order>> GetUserOrderAsync(int userId);
 
-	    Task<Order> GetOrderById(int id);
+	    Task<Order> GetOrderByIdAsync(int id);
 
-	    Task<Order> CreateOrder(string userName, CartViewModel cart, OrderViewModel orderViewModel);
+	    Task<Order> CreateOrderAsync(string userName, CartViewModel cart, OrderViewModel orderViewModel);
     }
 }
