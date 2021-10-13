@@ -22,7 +22,7 @@ namespace WebStore.Domain.Entities.Orders
 		[Required]
 		public DateTimeOffset OrderDate { get; set; } = DateTimeOffset.UtcNow;
 
-		public ICollection<Order> Items { get; set; } = new List<Order>();
+		public ICollection<OrderItem> Items { get; set; } = new List<OrderItem>();
 
 	}
 }
