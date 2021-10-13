@@ -70,6 +70,7 @@ namespace WebStore
 
 			services.AddScoped<IProductsAndBrandsLiteRepository, SqlProductData>();
 			services.AddScoped<ICartService, InCookiesCartService>();
+			services.AddScoped<IOrderService, SqlOrderService>();
 
 			services.AddControllersWithViews()
 				.AddRazorRuntimeCompilation()
