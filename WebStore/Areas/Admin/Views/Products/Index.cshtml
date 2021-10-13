@@ -5,9 +5,6 @@
 }
 
 <div class="container">
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
     <table class="table">
         <thead>
             <tr>
@@ -27,28 +24,34 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model) {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    <img src="~/images/shop/@item.ImgUrl" width="50" alt="@item.Name" />
-                </td>
-                <td>
-                    <a href="#"><i class="fa fa-edit"></i> </a>|
-                    <a href="#" class="text-danger"><i class="glyphicon glyphicon-remove"></i> </a>
-                    @*@Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
-                    @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
-                    @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})*@
+                    <a asp-controller="Products" asp-action="Edit">+ new</a>
                 </td>
             </tr>
+
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        <img src="~/images/shop/@item.ImgUrl" width="50" alt="@item.Name" />
+                    </td>
+                    <td>
+                        <a asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-edit"></i> </a>|
+                        <a asp-controller="Products" asp-action="Delete" asp-route-id="@item.Id" text-danger><i class="glyphicon glyphicon-remove"></i> </a>
+                        @*@Html.ActionLink("Edit", "Edit", new {/* id=item.PrimaryKey */}) |
+                            @Html.ActionLink("Details", "Details", new {/* id=item.PrimaryKey */}) |
+                            @Html.ActionLink("Delete", "Delete", new {/* id=item.PrimaryKey */})*@
+                    </td>
+                </tr>
             }
         </tbody>
     </table>

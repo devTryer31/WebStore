@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Entities;
 
 namespace WebStore.ViewModels
 {
 	public class ProductViewModel
 	{
+		[HiddenInput]
 		public int Id { get; set; }
 
 		public string Name { get; set; }
