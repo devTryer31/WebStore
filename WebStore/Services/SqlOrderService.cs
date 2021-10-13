@@ -26,13 +26,13 @@ namespace WebStore.Services
 			_UserManager = userManager;
 		}
 
-		public async Task<IEnumerable<Order>> GetUserOrderAsync(int userId)
+		public async Task<IEnumerable<Order>> GetUserOrdersAsync(string userName)
 		{
 			var orders = await _Db.Orders
 				.Include(o => o.Сustomer)
 				.Include(o => o.Items)
 				.ThenInclude(oi => oi.Product)
-				.Where(o => o.Id == userId).ToArrayAsync().ConfigureAwait(false);
+				.Where(o => o.Сustomer.UserName == userName).ToListAsync().ConfigureAwait(false);
 			return orders;
 		}
 

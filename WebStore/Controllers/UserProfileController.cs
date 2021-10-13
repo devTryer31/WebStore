@@ -1,0 +1,31 @@
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using WebStore.Services.Interfaces;
+using WebStore.ViewModels;
+
+namespace WebStore.Controllers
+{
+	[Authorize]
+    public class UserProfileController : Controller
+    {
+	    public IActionResult Index() => View();
+	    
+	    
+	    public async Task<IActionResult> Orders([FromServices] IOrderService orderService)
+	    {
+		    var orders = await orderService.GetUserOrdersAsync(User.Identity!.Name);
+
+		    return View(orders.Select(o => new UserOrderViewModel
+		    {
+			    Id = o.Id,
+			    Phone = o.Phone,
+			    Address = o.Address,
+			    TotalPrice = o.TotalPrice,
+			    Date = o.OrderDate,
+			    Description = o.Description
+		    }));
+	    }
+    }
+}
