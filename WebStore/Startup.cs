@@ -23,7 +23,7 @@ namespace WebStore
 		{
 			Configuration = configuration;
 		}
-		
+
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddSingleton<IRepository<Employee>, EmployeesRepository>();
@@ -91,10 +91,17 @@ namespace WebStore
 
 			app.UseEndpoints(endpoints =>
 			{
+
+				endpoints.MapControllerRoute(
+					name: "areas",
+					pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+				);
+
 				endpoints.MapControllerRoute(
 					"default",
 					"/{controller=Home}/{action=Index}/{id?}"
 				);
+
 			});
 		}
 	}
