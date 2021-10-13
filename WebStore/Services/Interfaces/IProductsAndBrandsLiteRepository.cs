@@ -9,7 +9,7 @@ namespace WebStore.Services.Interfaces
 {
 	public interface IProductsAndBrandsLiteRepository
 	{
-		public IEnumerable<Product> GetProducts(ProductsFilter filter);
+		public IEnumerable<Product> GetProducts(ProductsFilter filter = null);
 
 		public IEnumerable<Brand> GetBrands();
 
