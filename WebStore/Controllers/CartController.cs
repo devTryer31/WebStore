@@ -48,7 +48,7 @@ namespace WebStore.Controllers
 		public async Task<IActionResult> CheckOut(OrderViewModel orderModel, [FromServices] IOrderService orderService)
 		{
 			if (!ModelState.IsValid)
-				return View(new CartAndOrderViewModel() {
+				return View(nameof(Index),new CartAndOrderViewModel() {
 					Cart = _CartService.GetViewModel(),
 					Order = orderModel
 				});
@@ -57,11 +57,12 @@ namespace WebStore.Controllers
 
 			_CartService.Clear();
 
-			return RedirectToAction(nameof(ConfirmedOrder), new { Id = order.Id });
+			return RedirectToAction(nameof(ConfirmedOrder), new { order.Id });
 		}
 
 		public IActionResult ConfirmedOrder(int id)
 		{
+			ViewBag.OrderId = id;
 			return View();
 		}
 	}

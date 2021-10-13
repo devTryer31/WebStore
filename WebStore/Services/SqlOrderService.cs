@@ -55,7 +55,7 @@ namespace WebStore.Services
 
 			var order = new Order {
 				Сustomer = user,
-				Phone = user.PhoneNumber,
+				Phone = orderViewModel.Phone,
 				Address = orderViewModel.Address,
 				Description = orderViewModel.Description
 			};
