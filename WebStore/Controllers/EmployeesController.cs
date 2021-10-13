@@ -6,7 +6,9 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
+using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Enums;
 using WebStore.Models;
 using WebStore.Services.Interfaces;
@@ -51,7 +53,7 @@ namespace WebStore.Controllers
 		//public IActionResult Add() => View(); // in /Edit/[id = null].
 
 		#region Edit
-
+		[Authorize(Roles = Role.Administrators)]
 		public IActionResult Edit(int? id)
 		{
 			if (id is null) // If we adding new employee.
@@ -73,6 +75,7 @@ namespace WebStore.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = Role.Administrators)]
 		public IActionResult Edit(EmployeeViewModel viewModel)
 		{
 			Employee employee = new Employee {
@@ -98,7 +101,7 @@ namespace WebStore.Controllers
 		#endregion
 
 		#region Remove actions
-
+		[Authorize(Roles = Role.Administrators)]
 		public IActionResult Remove(int id)
 		{
 			if (id < 0)
@@ -122,6 +125,7 @@ namespace WebStore.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = Role.Administrators)]
 		public IActionResult RemoveConfirmed(int id)
 		{
 			_EmployeesData.Remove(_EmployeesData.Get(id));

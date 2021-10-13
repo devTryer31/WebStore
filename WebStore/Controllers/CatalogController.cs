@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using WebStore.Domain;
+using WebStore.Infrastructure.Extensions;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 
@@ -24,16 +25,19 @@ namespace WebStore.Controllers
 			};
 
 			var viewProducts = _ProductsAndBrands.GetProducts(filter)
-				.Select(p => new ProductViewModel
-				{
-					Id = p.Id,
-					Name = p.Name,
-					Price = p.Price,
-					ImgUrl = p.ImgUrl,
-
-				}).Take(12); //TODO: Paginate.
+				.ToViewEnumerable().Take(12); //TODO: Paginate.
 
 			return View(viewProducts);
+		}
+
+		public IActionResult Details(int id)
+		{
+			var product = _ProductsAndBrands.GetProductById(id);
+
+			if (product is null)
+				return NotFound();
+
+			return View(product.ToView());
 		}
 	}
 }

@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using WebStore.Domain.Entities.Identity;
 using WebStore.ViewModels.Identity;
 
 namespace WebStore.Controllers
 {
+	[Authorize]
 	public class AccountController : Controller
 	{
 		private const string _view = "LoginOrRegister";
@@ -19,6 +21,7 @@ namespace WebStore.Controllers
 			_SignInManager = signInManager;
 		}
 
+		[AllowAnonymous]
 		public IActionResult LoginOrRegister(string returnUrl) => View(_view,
 			new LoginOrRegisterViewModel { LoginViewModel = new() { ReturnUrl = returnUrl/*Request.Headers["Referer"].ToString()*/ } });
 
@@ -27,6 +30,7 @@ namespace WebStore.Controllers
 		//public IActionResult Register() => View(_view, new LoginOrRegisterViewModel());
 
 		[HttpPost, ValidateAntiForgeryToken]
+		[AllowAnonymous]
 		public async Task<IActionResult> Register(LoginOrRegisterViewModel model)
 		{
 			var loginModel = model.LoginViewModel;
@@ -48,6 +52,7 @@ namespace WebStore.Controllers
 				return View(_view, model);
 			}
 
+			await _UserManager.AddToRoleAsync(user, Role.Users);
 			await _SignInManager.SignInAsync(user, true);
 			return RedirectToAction("Index", "Home");
 		}
@@ -60,6 +65,7 @@ namespace WebStore.Controllers
 		//	new LoginOrRegisterViewModel { LoginViewModel = new() { ReturnUrl = returnUrl } });
 
 		[HttpPost, ValidateAntiForgeryToken]
+		[AllowAnonymous]
 		public async Task<IActionResult> Login(LoginOrRegisterViewModel model)
 		{
 			var loginModel = model.LoginViewModel;
@@ -92,6 +98,7 @@ namespace WebStore.Controllers
 			return RedirectToAction("Index", "Home");
 		}
 
+		[AllowAnonymous]
 		public IActionResult AccessDenied() => View();
 	}
 }

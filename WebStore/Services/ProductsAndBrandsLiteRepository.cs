@@ -11,7 +11,11 @@ namespace WebStore.Services
 		public IEnumerable<Product> GetProducts(ProductsFilter filter = null)
 		{
 			var products = TestDataService.Products;
-			
+
+			if (filter?.ProductsId is not null)
+				if (filter.ProductsId.Any())
+					return products.Where(p => filter.ProductsId.Contains(p.Id));
+
 			if (filter?.BrandId is not null)
 				products = products.Where(p => p.BrandId == filter.BrandId);
 
@@ -24,5 +28,7 @@ namespace WebStore.Services
 		public IEnumerable<Brand> GetBrands() => TestDataService.Brands;
 
 		public IEnumerable<ProductSection> GetProductSections() => TestDataService.ProductSections;
+
+		public Product GetProductById(int id) => TestDataService.Products.FirstOrDefault(p => p.Id == id);
 	}
 }

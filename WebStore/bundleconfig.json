@@ -1,0 +1,24 @@
+[
+  {
+    "outputFileName": "wwwroot/css/composedStyels.css",
+    "inputFiles": [
+      "wwwroot/css/main.css",
+      "wwwroot/css/responsive.css",
+      "wwwroot/css/price-rage.css"
+    ],
+    "minify": {
+      "enabled": true,
+      "adjustRelativePaths": false,
+      "gzip": true
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/composedScripts.js",
+    "inputFiles": [
+      "wwwroot/js/contact.js",
+      "wwwroot/js/gmaps.js",
+      "wwwroot/js/price-range.js",
+      "wwwroot/js/main.js"
+    ]
+  }
+]
