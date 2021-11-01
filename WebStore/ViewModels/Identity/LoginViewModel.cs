@@ -18,8 +18,6 @@ namespace WebStore.ViewModels.Identity
 		[Display(Name = "Запомнить меня")]
 		public bool IsRememberMe { get; set; }
 
-		private string _ReturnUrl;
-
 		[HiddenInput(DisplayValue = false)]
 		public string ReturnUrl
 		{

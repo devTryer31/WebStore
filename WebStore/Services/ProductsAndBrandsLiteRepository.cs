@@ -29,6 +29,11 @@ namespace WebStore.Services
 
 		public IEnumerable<ProductSection> GetProductSections() => TestDataService.ProductSections;
 
+		public void AddProduct(Product source)
+		{
+			throw new System.NotImplementedException("Only data-reading class.");
+		}
+
 		public Product GetProductById(int id) => TestDataService.Products.FirstOrDefault(p => p.Id == id);
 	}
 }

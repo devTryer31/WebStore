@@ -37,6 +37,17 @@ namespace WebStore.Services
 
 		public IEnumerable<ProductSection> GetProductSections() => _Db.ProductSections;
 
+		public void AddProduct(Product source)
+		{
+			using var transaction = _Db.Database.BeginTransaction();
+
+			_Db.Products.Add(source);
+
+			_Db.SaveChanges();
+
+			transaction.Commit();
+		}
+
 		public Product GetProductById(int id) =>
 			_Db.Products
 				.Include(p => p.Brand)
