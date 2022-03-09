@@ -2526,3 +2526,18 @@ h2.title {
 .table-borderless > thead > tr > th {
     border: none;
 }
+
+._l_inp:focus, ._r_inp:focus {
+    box-shadow: 0 0 15px orange;
+}
+
+._l_inp:disabled, ._r_inp:disabled {
+    filter: blur(0.8px);
+}
+
+._name_inp:invalid {
+    box-shadow: 0 0 10px red;
+}
+._err {
+    box-shadow: 0 0 20px red;
+}
