@@ -13,17 +13,16 @@
                     <div class="login-form">
                         <!--login form-->
                         <h2>Вход в аккаунт</h2>
-                        <form asp-action="Login" asp-antiforgery="true" asp-route-returnurl="@Model.LoginViewModel.ReturnUrl">
+                        <form id="login_form" asp-action="Login" asp-antiforgery="true" asp-route-returnurl="@Model.LoginViewModel.ReturnUrl">
 
+                            <input asp-for="LoginViewModel.Name" placeholder="Логин" class="_l_inp _name_inp" />
+                            <span id="login_name_err" asp-validation-for="LoginViewModel.Name"></span>
 
-                            <input asp-for="LoginViewModel.Name" placeholder="Логин" />
-                            <span asp-validation-for="LoginViewModel.Name"></span>
-
-                            <input asp-for="LoginViewModel.Password" placeholder="Пароль" />
+                            <input asp-for="LoginViewModel.Password" placeholder="Пароль" class="_l_inp" />
                             <span asp-validation-for="LoginViewModel.Password"></span>
 
                             <span>
-                                <input asp-for="LoginViewModel.IsRememberMe" class="checkbox">
+                                <input asp-for="LoginViewModel.IsRememberMe" class="checkbox _l_inp">
                                 Запомнить меня
                             </span>
                             <button type="submit" class="btn btn-default">Вход</button>
@@ -37,23 +36,32 @@
                     <div class="signup-form">
                         <!--sign up form-->
                         <h2>Регистрация нового пользователя</h2>
-                        <form asp-action="Register" asp-antiforgery="true">
+                        <form id="register_form" asp-action="Register" asp-antiforgery="true">
 
 
-                            <input asp-for="RegisterViewModel.Name" placeholder="Логин" />
-                            <span asp-validation-for="RegisterViewModel.Name"></span>
+                            <input asp-for="RegisterViewModel.Name" placeholder="Логин" class="_r_inp _name_inp" />
+                            <span id="register_name_err" asp-validation-for="RegisterViewModel.Name"></span>
 
-                            <input asp-for="RegisterViewModel.Password" placeholder="Пароль" />
-                            <span asp-validation-for="RegisterViewModel.Password"></span>
+                            <input asp-for="RegisterViewModel.Password" placeholder="Пароль" class="_r_inp" id="pass_box"/>
+                            <span id="pass_err" asp-validation-for="RegisterViewModel.Password"></span>
 
-                            <input asp-for="RegisterViewModel.SamePassword" placeholder="Подтверждение пароля" />
-                            <span asp-validation-for="RegisterViewModel.SamePassword"></span>
+                            <input asp-for="RegisterViewModel.SamePassword" placeholder="Подтверждение пароля" class="_r_inp" id="conf_pass_box"/>
+                            <span id="conf_pass_err" asp-validation-for="RegisterViewModel.SamePassword"></span>
 
                             <button type="submit" class="btn btn-default">Зарегистрироваться</button>
                         </form>
                     </div><!--/sign up form-->
                 </div>
             </div>
+            <div style="margin: 15px" class="row" id="valid_summary">
+
+            </div>
         </div>
     </section><!--/form-->
 </div>
+
+@section LocalScripts
+{
+    <script src="~/js/LoginOrRegister.js"></script>
+}
+
