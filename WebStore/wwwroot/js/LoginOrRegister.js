@@ -74,6 +74,8 @@
             /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(name)
             ||
             /^[A-Z][a-z]+\ [A-Z][a-z]+$/.test(name)
+            ||
+            name == "Admin"
         );
     }
 
@@ -83,12 +85,12 @@
 
 
     function loginFormSent(e) {
-        e.preventDefault();//TODO: enable login form!
         login_inputs.forEach(el => el.focus());
         form_valid_summary.innerHTML = '';
 
         if (login_errs > 0) {
             form_valid_summary.innerHTML = 'Some errors got in login form!';
+            e.preventDefault();
             return;
         }
 
@@ -100,12 +102,12 @@
     var pass_confirmed = false;
 
     function registerFormSent(e) {
-        e.preventDefault();//TODO: enable register form!
         register_inputs.forEach(el => el.focus());
         form_valid_summary.innerHTML = '';
 
         if (register_errs > 0 || !pass_confirmed) {
             form_valid_summary.innerHTML = 'Some errors got in register form!';
+            e.preventDefault();
             return;
         }
 
@@ -124,7 +126,7 @@
         if (!is_good) {
             conf_pass_box.disabled = true;
             e.target.classList.add('_err');
-            pass_err_box.innerHTML = 'Password must contain one ore more of [@, $, %, ^] symbols, lower and upper case char';
+            pass_err_box.innerHTML = 'Password must contain one ore more of [@, $, %, ^] symbols, lower and upper case char. Password length mast be greater than 6.';
         }
         else {
             e.target.classList.remove('_err');
