@@ -8,39 +8,58 @@ using WebStore.Models;
 
 namespace WebStore.Services
 {
-	internal static class TestDataService
-	{
-		private static readonly List<Employee> _Data;
+    internal static class TestDataService
+    {
+        private static readonly List<Employee> _Employees;
 
-		static TestDataService()
-		{
-			//Bad practice. It must be received from appsetting.json
-			const string fileDbPath = "Data/TextFiles/StaffData.json";
-			if (new FileInfo(fileDbPath).Exists)
-			{
-				using var fs = new FileStream(fileDbPath, FileMode.Open);
-				_Data = JsonSerializer.DeserializeAsync<List<Employee>>(fs).Result;
-			}
-			else
-			{
-				_Data = Enumerable.Range(1, 7).Select(x =>
-					new Employee
-					{
-						Name = $"Name_{x}",
-						Surname = $"Surname_{x}",
-						Patronymic = $"Patronymic_{x}",
-						Age = (ushort) (20 + x * 1.5),
-						Id = x,
-						Position = (EmployeePositions) x,
-						Score = (uint) (100 + x * x)
-					}).ToList();
-			}
-		}
+        static TestDataService()
+        {
+            //Bad practice. It must be received from appsetting.json
+            const string fileDbPath = "Data/TextFiles/StaffData.json";
+            if (new FileInfo(fileDbPath).Exists)
+            {
+                using var fs = new FileStream(fileDbPath, FileMode.Open);
+                _Employees = JsonSerializer.DeserializeAsync<List<Employee>>(fs).Result;
+            }
+            else
+            {
+                _Employees = Enumerable.Range(1, 7).Select(x =>
+                    new Employee
+                    {
+                        Name = $"Name_{x}",
+                        Surname = $"Surname_{x}",
+                        Patronymic = $"Patronymic_{x}",
+                        Age = (ushort)(20 + x * 1.5),
+                        Id = x,
+                        Position = (EmployeePositions)x,
+                        Score = (uint)(100 + x * x)
+                    }).ToList();
+            }
+            NormalizeData();
+        }
+        private static void NormalizeData()
+        {
+            foreach (var section in ProductSections)
+                section.Parent = ProductSections.FirstOrDefault(s => s.Id == section.ParentId);
 
-		public static IEnumerable<Employee> GetEmployees => _Data; //Bad naming. Just 'Employees' required.
+            foreach (var product in Products)
+            {
+                product.Brand = Brands.FirstOrDefault(b => b.Id == product.BrandId);
+                product.Section = ProductSections.FirstOrDefault(s => s.Id == product.SectionId);
+            }
 
-      public static IEnumerable<ProductSection> ProductSections { get; } = new[]
-{
+            foreach (var brand in Brands)
+                brand.Id = 0;
+            foreach (var section in ProductSections)
+                section.Id = 0;
+            foreach (var product in Products)
+                product.Id = 0;
+        }
+
+        public static IEnumerable<Employee> GetEmployees => _Employees;
+
+        public static IEnumerable<ProductSection> ProductSections { get; } = new[]
+        {
              new ProductSection { Id = 1, Name = "Спорт", Order = 0 },
               new ProductSection { Id = 2, Name = "Nike", Order = 0, ParentId = 1 },
               new ProductSection { Id = 3, Name = "Under Armour", Order = 1, ParentId = 1 },
@@ -73,8 +92,8 @@ namespace WebStore.Services
               new ProductSection { Id = 30, Name = "Обувь", Order = 9 },
         };
 
-      public static IEnumerable<Brand> Brands { get; } = new[]
-      {
+        public static IEnumerable<Brand> Brands { get; } = new[]
+        {
             new Brand { Id = 1, Name = "Acne", Order = 0 , PositionsAmount = 10 },
             new Brand { Id = 2, Name = "Grune Erde", Order = 1 , PositionsAmount = 11},
             new Brand { Id = 3, Name = "Albiro", Order = 2 , PositionsAmount = 1},
@@ -84,8 +103,8 @@ namespace WebStore.Services
             new Brand { Id = 7, Name = "Rosch creative culture", Order = 6 , PositionsAmount = 3},
         };
 
-      public static IEnumerable<Product> Products { get; } = new[]
-      {
+        public static IEnumerable<Product> Products { get; } = new[]
+        {
             new Product { Id = 1, Name = "Белое платье", Price = 1025, ImgUrl = "product1.jpg", Order = 0, SectionId = 2, BrandId = 1 },
             new Product { Id = 2, Name = "Розовое платье", Price = 1025, ImgUrl = "product2.jpg", Order = 1, SectionId = 2, BrandId = 1 },
             new Product { Id = 3, Name = "Красное платье", Price = 1025, ImgUrl = "product3.jpg", Order = 2, SectionId = 2, BrandId = 1 },
@@ -100,5 +119,5 @@ namespace WebStore.Services
             new Product { Id = 12, Name = "Летний костюм", Price = 1025, ImgUrl = "product12.jpg", Order = 10, SectionId = 24, BrandId = 3 },
             new Product { Id = 13, Name = "Летняя сумка Rosch", Price = 1025, ImgUrl = "product12.jpg", Order = 11, SectionId = 24, BrandId = 7 },
         };
-   }
+    }
 }
