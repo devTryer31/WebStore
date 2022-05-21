@@ -30,7 +30,13 @@ namespace WebStore
 
 			services.AddDbContext<WebStoreDb>(opt =>
 			{
-				opt.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
+#if DEBUG
+                opt.UseSqlServer(Configuration.GetConnectionString("EmptySqlServer"));
+#else
+                opt.UseSqlServer(Configuration.GetConnectionString("SqlServerDocker"));
+#endif
+
+
 				//opt.EnableSensitiveDataLogging();
 			});
 
