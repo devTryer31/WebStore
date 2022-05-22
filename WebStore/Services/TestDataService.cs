@@ -1,42 +1,38 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using WebStore.Domain.Entities;
-using WebStore.Infrastructure.Enums;
-using WebStore.Models;
 
 namespace WebStore.Services
 {
     internal static class TestDataService
     {
-        private static readonly List<Employee> _Employees;
+        private static readonly Employee[] _Employees;
 
         static TestDataService()
         {
-            //Bad practice. It must be received from appsetting.json
-            const string fileDbPath = "Data/TextFiles/StaffData.json";
-            if (new FileInfo(fileDbPath).Exists)
-            {
-                using var fs = new FileStream(fileDbPath, FileMode.Open);
-                _Employees = JsonSerializer.DeserializeAsync<List<Employee>>(fs).Result;
-            }
-            else
-            {
-                _Employees = Enumerable.Range(1, 7).Select(x =>
-                    new Employee
-                    {
-                        Name = $"Name_{x}",
-                        Surname = $"Surname_{x}",
-                        Patronymic = $"Patronymic_{x}",
-                        Age = (ushort)(20 + x * 1.5),
-                        Id = x,
-                        Position = (EmployeePositions)x,
-                        Score = (uint)(100 + x * x)
-                    }).ToList();
-            }
+            string[] names = { "Valery", "Kirill", "Danila", "Petr", "German", "Lera", "Svetlana" };
+            string[] surnames = { "Gerasimov", "Carpuhin", "Solovev", "Orel", "Germanio" };
+            string[] patronymics = { null, "Victorovich", "Evgenievich", "Alexeevich", "Alexandrovich", "Valerievich" };
+            var positions = Enum.GetValues<EmployeePositions>();
+
+            Random rg = new();
+
+            _Employees = Enumerable.Range(1, 10).Select(x =>
+                new Employee
+                {
+                    Name = names[rg.Next(0, names.Length)],
+                    Surname = surnames[rg.Next(0, surnames.Length)],
+                    Patronymic = patronymics[rg.Next(0, patronymics.Length)],
+                    Age = (ushort)rg.Next(20, 60),
+                    Position = positions[rg.Next(0, positions.Length)],
+                    Score = (uint)rg.Next(100, 1001)
+                }).ToArray();
+
             NormalizeData();
         }
+
+
         private static void NormalizeData()
         {
             foreach (var section in ProductSections)
@@ -54,9 +50,11 @@ namespace WebStore.Services
                 section.Id = 0;
             foreach (var product in Products)
                 product.Id = 0;
+            foreach (var empl in Employees) //For safety.
+                empl.Id = 0;
         }
 
-        public static IEnumerable<Employee> GetEmployees => _Employees;
+        public static IEnumerable<Employee> Employees => _Employees;
 
         public static IEnumerable<ProductSection> ProductSections { get; } = new[]
         {

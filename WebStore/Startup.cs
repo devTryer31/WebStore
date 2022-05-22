@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
-using WebStore.Models;
 using WebStore.Services.Interfaces;
 using WebStore.Services;
 using WebStore.Services.InCookies;
@@ -26,8 +25,6 @@ namespace WebStore
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddSingleton<IRepository<Employee>, EmployeesRepository>();
-
 			services.AddDbContext<WebStoreDb>(opt =>
 			{
 #if DEBUG

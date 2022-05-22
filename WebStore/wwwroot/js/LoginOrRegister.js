@@ -71,7 +71,7 @@
 
     function checkNameInput(name) {
         return name && (
-            /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(name)
+            /^([\w-]+\.)*[\w-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(name)
             ||
             /^[A-Z][a-z]+\ [A-Z][a-z]+$/.test(name)
             ||

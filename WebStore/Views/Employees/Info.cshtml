@@ -1,9 +1,9 @@
-﻿@model WebStore.Models.Employee
+﻿@model WebStore.ViewModels.EmployeeViewModel
 
 <body class="container">
     <header>
         <a asp-controller="Employees" asp-action="Index">Go back ←</a>
-        <h2>Employee Id[@Model.Id]</h2>
+        <h2>Employee #@Model.Id</h2>
     </header>
 
     <p>Name: <span>@Model.Name</span></p>
