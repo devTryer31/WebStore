@@ -5,18 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title - Admin</title>
     <partial name="Partial/_Styles" />
-    
+
     @await RenderSectionAsync("Styles", false)
 </head>
 <body>
 
-
-
     <div id="wrapper">
-        <partial name="Partial/_Header"/>
-        <partial name="Partial/_SideBarMenu"/>
-        @RenderBody()
+        <partial name="Partial/_Header" />
+        <partial name="Partial/_SideBarMenu" />
+        <div id="page-wrapper">
+            <div id="page-inner">
+                @RenderBody()
+            </div>
+        </div>
     </div>
+
 
     <partial name="Partial/_Footer" />
 
