@@ -1,7 +1,8 @@
-﻿@{
+﻿@using WebStore.Infrastructure.Utils.Pagination
+@{
     ViewData["Title"] = "Home | E-Shopper";
 }
-@model IEnumerable<ProductViewModel>
+@model IPaginator<ProductViewModel>
 
 <partial name="Partial/_Slider" />
 

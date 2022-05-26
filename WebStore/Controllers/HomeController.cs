@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Linq;
 using WebStore.Domain;
+using WebStore.Domain.Entities;
 using WebStore.Infrastructure.Extensions;
+using WebStore.Infrastructure.Utils.Pagination;
 using WebStore.Services.Interfaces;
+using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
@@ -15,18 +19,22 @@ namespace WebStore.Controllers
             _ProductsAndBrands = productsAndBrands;
         }
 
-        public IActionResult Index(int? sectionId, int? brandId)
+        public IActionResult Index(int? sectionId, int? brandId, int page = 1)
         {
             ProductsFilter filter = new()
             {
                 SectionId = sectionId,
-                BrandId = brandId
+                BrandId = brandId,
             };
 
-            var viewProducts = _ProductsAndBrands.GetProducts(filter)
-                .ToViewEnumerable().Take(6);
+            var filtered = _ProductsAndBrands.GetProducts(filter).ToViewEnumerable();
 
-            return View(viewProducts);
+            Paginator<ProductViewModel> paginator = new(filtered, filter.CountOnPage)
+            {
+                CurrentPage = page,
+            };
+
+            return View(paginator);
         }
 
         public IActionResult BlogSingle() =>

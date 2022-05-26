@@ -20,7 +20,7 @@ namespace WebStore.Services
 				.Include(p => p.Section)
 				.Include(p => p.Brand);
 
-			if (filter?.ProductsId is not null)
+            if (filter?.ProductsId is not null)
 				if (filter.ProductsId.Any())
 					return products.Where(p => filter.ProductsId.Contains(p.Id));
 
@@ -29,6 +29,8 @@ namespace WebStore.Services
 
 			if (filter?.SectionId is not null)
 				products = products.Where(p => p.SectionId == filter.SectionId);
+
+			products = products.OrderBy(p => p.Order);
 
 			return products;
 		}
@@ -53,5 +55,7 @@ namespace WebStore.Services
 				.Include(p => p.Brand)
 				.Include(p => p.Section)
 				.FirstOrDefault(p => p.Id == id);
-	}
+
+        public int GetProductCount() => _Db.Products.Count();
+    }
 }

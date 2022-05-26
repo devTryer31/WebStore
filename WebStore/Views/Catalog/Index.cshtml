@@ -1,7 +1,8 @@
-﻿@{
+﻿@using WebStore.Infrastructure.Utils.Pagination
+@{
     ViewData["Title"] = "Каталог | E-Shopper";
 }
-@model IEnumerable<ProductViewModel>
+@model IPaginator<ProductViewModel>
 <section id="advertisement">
     <div class="container">
         <img src="images/shop/advertisement.jpg" alt="" />

@@ -35,5 +35,7 @@ namespace WebStore.Services
 		}
 
 		public Product GetProductById(int id) => TestDataService.Products.FirstOrDefault(p => p.Id == id);
-	}
+
+        public int GetProductCount() => TestDataService.Products.Count();
+    }
 }

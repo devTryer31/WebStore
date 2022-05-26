@@ -93,7 +93,6 @@ namespace WebStore.Controllers
 
         #endregion
 
-        [Authorize]
         public async Task<IActionResult> Logout(string returnUrl)
         {
             await _SignInManager.SignOutAsync();

@@ -2,42 +2,47 @@
 using System.Linq;
 using WebStore.Domain;
 using WebStore.Infrastructure.Extensions;
+using WebStore.Infrastructure.Utils.Pagination;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
-	public class CatalogController : Controller
-	{
-		private readonly IProductsAndBrandsLiteRepository _ProductsAndBrands;
+    public class CatalogController : Controller
+    {
+        private readonly IProductsAndBrandsLiteRepository _ProductsAndBrands;
 
-		public CatalogController(IProductsAndBrandsLiteRepository productsAndBrands)
-		{
-			_ProductsAndBrands = productsAndBrands;
-		}
+        public CatalogController(IProductsAndBrandsLiteRepository productsAndBrands)
+        {
+            _ProductsAndBrands = productsAndBrands;
+        }
 
-		public IActionResult Index(int? sectionId, int? brandId)
-		{
-			ProductsFilter filter = new()
-			{
-				SectionId = sectionId,
-				BrandId = brandId
-			};
+        public IActionResult Index(int? sectionId, int? brandId, int page = 1)//TODO: Equal with HomeController.Index method
+        {
+            ProductsFilter filter = new()
+            {
+                SectionId = sectionId,
+                BrandId = brandId,
+            };
 
-			var viewProducts = _ProductsAndBrands.GetProducts(filter)
-				.ToViewEnumerable().Take(12); //TODO: Paginate.
+            var filtered = _ProductsAndBrands.GetProducts(filter).ToViewEnumerable();
 
-			return View(viewProducts);
-		}
+            Paginator<ProductViewModel> paginator = new(filtered, filter.CountOnPage)
+            {
+                CurrentPage = page
+            };
 
-		public IActionResult Details(int id)
-		{
-			var product = _ProductsAndBrands.GetProductById(id);
+            return View(paginator);
+        }
 
-			if (product is null)
-				return NotFound();
+        public IActionResult Details(int id)
+        {
+            var product = _ProductsAndBrands.GetProductById(id);
 
-			return View(product.ToView());
-		}
-	}
+            if (product is null)
+                return NotFound();
+
+            return View(product.ToView());
+        }
+    }
 }
