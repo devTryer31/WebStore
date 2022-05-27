@@ -55,9 +55,6 @@ namespace WebStore.Controllers
         public IActionResult Login() =>
             Redirect("/Account/LoginOrRegister");
 
-        public IActionResult ProductDetails() =>
-            View();
-
         public IActionResult Shop() =>
             View();
     }

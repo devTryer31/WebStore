@@ -3,4 +3,15 @@
     Layout = "_UserProfileLayout";
 }
 
-<p>Профиль</p>
+@model UserProfileViewModel
+
+<body>
+    <header>
+        <h2>@Model.UserName профиль</h2>
+    </header>
+
+    <p>Email: <span>@Model.Email</span></p>@{/*TODO: Add number and e-mail in register form*/}
+    <hr />
+    <p>Phone number: <span>@Model.PhoneNumber</span></p>
+    <hr />
+</body>

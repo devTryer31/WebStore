@@ -6,9 +6,6 @@
     <h2 class="title text-center">Товары</h2>
 
     <table class="table table-borderless">
-        @{
-            /*TODO: fix the borders.*/
-        }
         <tbody>
             <tr>
                 <td>
@@ -19,7 +16,7 @@
                                 <div class="single-products">
                                     <div class="productinfo text-center">
                                         <img src="~/images/shop/@product.ImgUrl" alt="" />
-                                        <h2>$@product.Price</h2>
+                                        <h2>@product.Price.ToString("C")</h2>
                                         <p>
                                             <a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">
                                                 @product.Name
@@ -28,19 +25,6 @@
                                         <a asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id" class="btn btn-default add-to-cart">
                                             <i class="fa fa-shopping-cart"></i>В корзину
                                         </a>
-                                    </div>
-                                    <div class="product-overlay">
-                                        <div class="overlay-content">
-                                            <h2>$@product.Price</h2>
-                                            <p>
-                                                <a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">
-                                                    @product.Name
-                                                </a>
-                                            </p>
-                                            <a asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id" class="btn btn-default add-to-cart">
-                                                <i class="fa fa-shopping-cart"></i>В корзину
-                                            </a>
-                                        </div>
                                     </div>
                                 </div>
                                 @*                                <div class="choose">
