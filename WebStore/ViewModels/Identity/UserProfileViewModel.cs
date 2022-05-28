@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebStore.ViewModels.Identity
 {
@@ -11,5 +12,7 @@ namespace WebStore.ViewModels.Identity
 
         [DataType(dataType: DataType.EmailAddress)]
         public string Email { get; set; }
+
+        public IEnumerable<ProductViewModel> FavoriteProducts { get; set; }
     }
 }

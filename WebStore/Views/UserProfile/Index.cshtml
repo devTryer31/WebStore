@@ -10,8 +10,28 @@
         <h2>@Model.UserName профиль</h2>
     </header>
 
-    <p>Email: <span>@Model.Email</span></p>@{/*TODO: Add number and e-mail in register form*/}
-    <hr />
-    <p>Phone number: <span>@Model.PhoneNumber</span></p>
-    <hr />
+    <div>
+        <h4>Сохраненные товары</h4>
+        <hr />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model.FavoriteProducts)
+                {
+                    <tr>
+                        <td><a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">@product.Id.ToString("0000000")</a></td>
+                        <td>@product.Name</td>
+                        <td>@product.Price</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
 </body>

@@ -27,4 +27,17 @@ $(document).ready(function(){
 	        zIndex: 2147483647 // Z-Index for the overlay
 		});
 	});
+	$(".add_favorite").click(function () {
+		const p_id = $(this).attr('id');
+
+		$.ajax({
+			type: "POST",
+			url: location.protocol + '//' + location.host + "/FavoriteProducts/AddToFavorite/",
+			contentType: "application/json; charset=utf-8",
+			data: p_id,
+			error: function () {
+				alert("Bad add to favorite request.");
+			}
+		});
+	});
 });
