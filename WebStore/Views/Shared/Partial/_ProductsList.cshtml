@@ -30,10 +30,20 @@
                                 <div class="choose">
                                     <ul class="nav nav-pills nav-justified">
                                         <li>
-                                            <a class="add_favorite" id="@product.Id" style="cursor: pointer">
-                                                <i class="fa fa-plus-square"></i>
-                                                Сохранить
-                                            </a>
+                                            @if (!product.IsUserFavorite)
+                                            {
+                                                <a class="add_favorite" id="@product.Id" style="cursor: pointer;">
+                                                    <i class="fa fa-plus-square"></i>
+                                                    Сохранить
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="added_favorite" id="@product.Id" style="cursor: pointer; color: #FFD700">
+                                                    <i class="fa fa-check"></i>
+                                                    Сохранено
+                                                </a>
+                                            }
                                         </li>
                                         @*<li><a href="#"><i class="fa fa-plus-square"></i>Добавить к сравнению</a></li> To frontend part*@
                                     </ul>
