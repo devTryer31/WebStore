@@ -24,19 +24,19 @@
                             <!-- Wrapper for slides -->
                             <div class="carousel-inner">
                                 <div class="item active">
-                                    <a href=""><img src="~/images/product-details/similar1.jpg" alt=""></a>
-                                    <a href=""><img src="~/images/product-details/similar2.jpg" alt=""></a>
-                                    <a href=""><img src="~/images/product-details/similar3.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/shop/@Model.ImgUrl" alt=""></a>
+                                    <a href=""><img src="~/images/shop/@Model.ImgUrl" alt=""></a>
+                                    <a href=""><img src="~/images/shop/@Model.ImgUrl" alt=""></a>
                                 </div>
                                 <div class="item">
-                                    <a href=""><img src="~/images/product-details/similar1.jpg" alt=""></a>
-                                    <a href=""><img src="~/images/product-details/similar2.jpg" alt=""></a>
-                                    <a href=""><img src="~/images/product-details/similar3.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/shop/@Model.ImgUrl" alt=""></a>
+                                    <a href=""><img src="~/images/shop/@Model.ImgUrl" alt=""></a>
+                                    <a href=""><img src="~/images/shop/@Model.ImgUrl" alt=""></a>
                                 </div>
                                 <div class="item">
-                                    <a href=""><img src="~/images/product-details/similar1.jpg" alt=""></a>
-                                    <a href=""><img src="~/images/product-details/similar2.jpg" alt=""></a>
-                                    <a href=""><img src="~/images/product-details/similar3.jpg" alt=""></a>
+                                    <a href=""><img src="~/images/shop/@Model.ImgUrl" alt=""></a>
+                                    <a href=""><img src="~/images/shop/@Model.ImgUrl" alt=""></a>
+                                    <a href=""><img src="~/images/shop/@Model.ImgUrl" alt=""></a>
                                 </div>
 
                             </div>
@@ -59,7 +59,7 @@
                             <p>Артикул: @Model.Id.ToString("00000000")</p>
                             <img src="~/images/product-details/rating.png" alt="" />
                             <span>
-                                <span>US @Model.Price.ToString("C")</span>
+                                <span>@Model.Price.ToString("C")</span>
                                 <label>Количество:</label>
                                 <input type="text" value="3" />
                                 <a class="btn btn-default cart"

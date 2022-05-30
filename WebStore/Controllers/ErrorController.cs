@@ -8,6 +8,7 @@ namespace WebStore.Controllers
 		public IActionResult Index(int errorCode) =>
 			errorCode switch {
 				404 => RedirectToAction(nameof(NotFound)),
+				401 => Content($"You must be authorized for this action. Status code: {errorCode}"),
 				_ => Content($"Error code: {errorCode}. Sorry :("),
 			};
 

@@ -28,7 +28,7 @@ namespace WebStore.Controllers
             var product = await _db.Products.FirstOrDefaultAsync(p => p.Id == productId);
 
             if (user is null || product is null)
-                return BadRequest(new { err = "User or product not found." });
+                return NotFound(new { err = "User or product not found." });
 
             user.FavoriteProducts.Add(product);
 
@@ -48,7 +48,7 @@ namespace WebStore.Controllers
             var product = await _db.Products.FirstOrDefaultAsync(p => p.Id == productId);
 
             if (user is null || product is null)
-                return BadRequest(new { err = "User or product not found." });
+                return NotFound(new { err = "User or product not found." });
 
             user.FavoriteProducts.Remove(product);
 

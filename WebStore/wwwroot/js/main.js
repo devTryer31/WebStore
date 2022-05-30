@@ -27,7 +27,26 @@ $(document).ready(function(){
 	        zIndex: 2147483647 // Z-Index for the overlay
 		});
 	});
-	$(".add_favorite").click(function () {
+
+	const added_click = function () {
+		const p_id = $(this).attr('id');
+		const thisElem = $(this);
+		$.ajax({
+			type: "POST",
+			url: location.protocol + '//' + location.host + "/FavoriteProducts/RemoveFromFavorite/",
+			contentType: "application/json; charset=utf-8",
+			data: p_id,
+			success: function () {
+				thisElem.replaceWith(' <a class="add_favorite" id="' + p_id + '" style="cursor: pointer;"> <i class="fa fa-plus-square"></i>Сохранить</a>');
+				$('#' + p_id).click(add_click);
+			},
+			error: function (m) {
+				alert(m.responseText);
+			}
+		});
+	};
+
+	const add_click = function () {
 		const p_id = $(this).attr('id');
 		const thisElem = $(this);
 		$.ajax({
@@ -37,26 +56,14 @@ $(document).ready(function(){
 			data: p_id,
 			success: function () {
 				thisElem.replaceWith('<a class="added_favorite" id="' + p_id + '" style="cursor: pointer; color: #FFD700"><i class="fa fa-check" ></i >Сохранено</a >');
-            },
-			error: function () {
-				alert("Bad add to favorite request.");
-			}
-		});
-	});
-	$(".added_favorite").click(function () {
-		const p_id = $(this).attr('id');
-		const thisElem = $(this);
-		$.ajax({
-			type: "POST",
-			url: location.protocol + '//' + location.host + "/FavoriteProducts/RemoveFromFavorite/",
-			contentType: "application/json; charset=utf-8",
-			data: p_id,
-			success: function () {
-				thisElem.replaceWith(' <a class="add_favorite" id="' + p_id + '" style="cursor: pointer;"> <i class="fa fa-plus-square"></i> Сохранить </a>');
+				$('#' + p_id).click(added_click);
 			},
-			error: function () {
-				alert("Bad remove from favorite request.");
+			error: function (m) {
+				alert(m.responseText);
 			}
 		});
-	});
+	};
+
+	$(".add_favorite").click(add_click);
+	$(".added_favorite").click(added_click);
 });
