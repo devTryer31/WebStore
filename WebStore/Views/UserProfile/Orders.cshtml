@@ -9,6 +9,7 @@
     <thead>
         <tr>
             <th>№</th>
+            <th>Id</th>
             <th>Дата</th>
             <th>Адрес</th>
             <th>Телефон</th>
@@ -21,6 +22,7 @@
         @foreach (var order in Model) {
             <tr>
                 <td>@(i++)</td>
+                <td>@order.Id.ToString("0000000")</td>
                 <td>@order.Date.ToString("dd.MM.yy HH:mm")</td>
                 <td>@order.Address</td>
                 <td>@order.Phone</td>

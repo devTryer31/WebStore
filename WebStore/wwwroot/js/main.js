@@ -17,7 +17,7 @@ $(document).ready(function(){
 	        scrollSpeed: 300, // Speed back to top (ms)
 	        easingType: 'linear', // Scroll to top easing (see http://easings.net/)
 	        animation: 'fade', // Fade, slide, none
-	        animationSpeed: 200, // Animation in speed (ms)
+	        animationSpeed: 300, // Animation in speed (ms)
 	        scrollTrigger: false, // Set a custom triggering element. Can be an HTML string or jQuery object
 					//scrollTarget: false, // Set a custom target element for scrolling to the top
 	        scrollText: '<i class="fa fa-angle-up"></i>', // Text for element, can contain HTML
@@ -27,4 +27,43 @@ $(document).ready(function(){
 	        zIndex: 2147483647 // Z-Index for the overlay
 		});
 	});
+
+	const added_click = function () {
+		const p_id = $(this).attr('id');
+		const thisElem = $(this);
+		$.ajax({
+			type: "POST",
+			url: location.protocol + '//' + location.host + "/FavoriteProducts/RemoveFromFavorite/",
+			contentType: "application/json; charset=utf-8",
+			data: p_id,
+			success: function () {
+				thisElem.replaceWith(' <a class="add_favorite" id="' + p_id + '" style="cursor: pointer;"> <i class="fa fa-plus-square"></i>Сохранить</a>');
+				$('#' + p_id).click(add_click);
+			},
+			error: function (m) {
+				alert(m.responseText);
+			}
+		});
+	};
+
+	const add_click = function () {
+		const p_id = $(this).attr('id');
+		const thisElem = $(this);
+		$.ajax({
+			type: "POST",
+			url: location.protocol + '//' + location.host + "/FavoriteProducts/AddToFavorite/",
+			contentType: "application/json; charset=utf-8",
+			data: p_id,
+			success: function () {
+				thisElem.replaceWith('<a class="added_favorite" id="' + p_id + '" style="cursor: pointer; color: #FFD700"><i class="fa fa-check" ></i >Сохранено</a >');
+				$('#' + p_id).click(added_click);
+			},
+			error: function (m) {
+				alert(m.responseText);
+			}
+		});
+	};
+
+	$(".add_favorite").click(add_click);
+	$(".added_favorite").click(added_click);
 });

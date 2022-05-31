@@ -60,7 +60,7 @@
                 return;
             }
             e.target.classList.add('_err');
-            err.innerHTML = '<p>Name should be e-mail or \'Name Surname\' like.</p>';
+            err.innerHTML = '<p>Name should be e-mail or consist of digit and letters.</p>';
             if (is_register)
                 ++register_errs;
             else
@@ -71,9 +71,9 @@
 
     function checkNameInput(name) {
         return name && (
-            /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(name)
+            /^([\w-]+\.)*[\w-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(name)
             ||
-            /^[A-Z][a-z]+\ [A-Z][a-z]+$/.test(name)
+            /^[A-Za-z0-9]+$/.test(name)
             ||
             name == "Admin"
         );

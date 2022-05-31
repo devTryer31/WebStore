@@ -2,12 +2,14 @@
 
 namespace WebStore.Domain
 {
-	public class ProductsFilter
-	{
-		public int? SectionId { get; set; }
+    public class ProductsFilter
+    {
+        public int CountOnPage { get; set; } = 15;
 
-		public int? BrandId { get; set; }
+        public int? SectionId { get; set; }
 
-		public IEnumerable<int> ProductsId { get; set; }
-	}
+        public int? BrandId { get; set; }
+
+        public IEnumerable<int> ProductsId { get; set; }
+    }
 }

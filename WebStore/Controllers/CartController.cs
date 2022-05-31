@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Services.Interfaces;
@@ -15,11 +16,19 @@ namespace WebStore.Controllers
 			_CartService = cartService;
 		}
 
-		public IActionResult Index() => View(new CartAndOrderViewModel() {
-			Cart = _CartService.GetViewModel()
-		});
+        public IActionResult Index()
+        {
+			var cartViewModel = _CartService.GetViewModel();
+			if (!cartViewModel.Items.Any())
+				return View(null);
 
-		public IActionResult Add(int id)
+			return View(new CartAndOrderViewModel()
+					{
+						Cart = cartViewModel
+					});
+        }
+
+        public IActionResult Add(int id)
 		{
 			_CartService.Add(id);
 			return RedirectToAction("Index");
@@ -60,10 +69,6 @@ namespace WebStore.Controllers
 			return RedirectToAction(nameof(ConfirmedOrder), new { order.Id });
 		}
 
-		public IActionResult ConfirmedOrder(int id)
-		{
-			ViewBag.OrderId = id;
-			return View();
-		}
-	}
+        public IActionResult ConfirmedOrder(int id) => View(id);
+    }
 }

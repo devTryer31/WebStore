@@ -1,23 +1,22 @@
-﻿@model IEnumerable<ProductViewModel>
+﻿@using WebStore.Infrastructure.Utils.Pagination
+@model IPaginator<ProductViewModel>
 
 <div class="features_items">
     <!--features_items-->
     <h2 class="title text-center">Товары</h2>
 
     <table class="table table-borderless">
-        @{
-            /*TODO: fix the borders.*/
-        }
         <tbody>
             <tr>
                 <td>
-                    @foreach (var product in Model) {
+                    @foreach (var product in Model.CurrentPageValues)
+                    {
                         <div class="col-sm-4">
                             <div class="product-image-wrapper">
                                 <div class="single-products">
                                     <div class="productinfo text-center">
                                         <img src="~/images/shop/@product.ImgUrl" alt="" />
-                                        <h2>$@product.Price</h2>
+                                        <h2>@product.Price.ToString("C")</h2>
                                         <p>
                                             <a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">
                                                 @product.Name
@@ -27,24 +26,26 @@
                                             <i class="fa fa-shopping-cart"></i>В корзину
                                         </a>
                                     </div>
-                                    <div class="product-overlay">
-                                        <div class="overlay-content">
-                                            <h2>$@product.Price</h2>
-                                            <p>
-                                                <a asp-controller="Catalog" asp-action="Details" asp-route-id="@product.Id">
-                                                    @product.Name
-                                                </a>
-                                            </p>
-                                            <a asp-controller="Cart" asp-action="Add" asp-route-id="@product.Id" class="btn btn-default add-to-cart">
-                                                <i class="fa fa-shopping-cart"></i>В корзину
-                                            </a>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="choose">
                                     <ul class="nav nav-pills nav-justified">
-                                        <li><a href="#"><i class="fa fa-plus-square"></i>Добавить в желания</a></li>
-                                        <li><a href="#"><i class="fa fa-plus-square"></i>Добавить к сравнению</a></li>
+                                        <li>
+                                            @if (!product.IsUserFavorite)
+                                            {
+                                                <a class="add_favorite" id="@product.Id" style="cursor: pointer;">
+                                                    <i class="fa fa-plus-square"></i>
+                                                    Сохранить
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="added_favorite" id="@product.Id" style="cursor: pointer; color: #FFD700">
+                                                    <i class="fa fa-check"></i>
+                                                    Сохранено
+                                                </a>
+                                            }
+                                        </li>
+                                        @*<li><a href="#"><i class="fa fa-plus-square"></i>Добавить к сравнению</a></li> To frontend part*@
                                     </ul>
                                 </div>
                             </div>
@@ -56,10 +57,21 @@
                 <td>
                     <div class="row">
                         <ul class="pagination">
-                            <li class="active"><a href="">1</a></li>
-                            <li><a href="">2</a></li>
-                            <li><a href="">3</a></li>
-                            <li><a href="">&raquo;</a></li>
+                            @for (var i = 1; i <= Model.PagesCount; ++i)
+                            {
+                                if (i != Model.CurrentPage)
+                                {
+                                    <li>
+                                        <a asp-action="Index" asp-route-page="@i">
+                                            @i
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="active"><a href="">@i</a></li>
+                                }
+                            }
                         </ul>
                     </div>
                 </td>

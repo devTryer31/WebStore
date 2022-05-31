@@ -1,25 +1,36 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
-using WebStore.Infrastructure.Enums;
+using WebStore.Domain.Entities;
 
 namespace WebStore.ViewModels
 {
-	public class EmployeeViewModel
-	{
-		public string Name { get; set; }
+    public class EmployeeViewModel
+    {
+        private static readonly IEnumerable<SelectListItem> _avaliablePositionsNames = 
+            System.Enum.GetNames<EmployeePositions>().Select(n => new SelectListItem { Value = n, Text = n});
 
-		public string Surname { get; set; }
+        [Required]
+        public string Name { get; set; }
 
-		public string Patronymic { get; set; }
+        [Required]
+        public string Surname { get; set; }
 
-		public ushort Age { get; set; }
+        public string Patronymic { get; set; }
 
-		public int Id { get; set; }
+        [Range(18, 100, ErrorMessage = "Age not correct. Must be between 18 and 100")]
+        public ushort Age { get; set; }
 
-		public EmployeePositions Position { get; set; }
+        [Required]
+        public int Id { get; set; }
 
-		public uint Score { get; set; }
-	}
+        [Required]
+        public string Position { get; set; }
+
+        [Required]
+        public uint Score { get; set; }
+
+        public IEnumerable<SelectListItem> AvaliablePositions => _avaliablePositionsNames;
+    }
 }

@@ -1,140 +1,116 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using System.Text.Json;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Threading.Tasks;
+using WebStore.DAL.Context;
+using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Identity;
-using WebStore.Infrastructure.Enums;
-using WebStore.Models;
-using WebStore.Services.Interfaces;
+using WebStore.Infrastructure.Extensions;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
-	public class EmployeesController : Controller
-	{
-		private readonly IRepository<Employee> _EmployeesData;
-		private readonly ILogger<EmployeesController> _Logger;
-		private readonly IConfiguration _Configuration;
+    public class EmployeesController : Controller
+    {
+        private readonly DbSet<Employee> _EmployeesData;
+        private readonly WebStoreDb _db;
+        private readonly ILogger<EmployeesController> _Logger;
+        private readonly IConfiguration _Configuration;
 
-		public EmployeesController(IRepository<Employee> EmployeesData, ILogger<EmployeesController> Logger, IConfiguration Configuration)
-		{
-			_EmployeesData = EmployeesData;
-			_Logger = Logger;
-			_Configuration = Configuration;
-		}
+        public EmployeesController(WebStoreDb db, ILogger<EmployeesController> Logger, IConfiguration Configuration)
+        {
+            _EmployeesData = db.Employees;
+            _db = db;
+            _Logger = Logger;
+            _Configuration = Configuration;
+        }
 
-		private async void SaveChanges()
-		{
-			await using FileStream fs = new(_Configuration["EmployeesDbFilePath"], FileMode.Create);
-			await JsonSerializer.SerializeAsync(fs, new List<Employee>(_EmployeesData.GetAll()));
-		}
+        public IActionResult Index() => View(_EmployeesData.ToViewModelEnumerable());
 
-		public IActionResult Index() => View(_EmployeesData.GetAll());
+        public async Task<IActionResult> Info(int? id)
+        {
+            if (!id.HasValue)
+                return NotFound();
 
-		public IActionResult Info(int? id)
-		{
-			if (!id.HasValue)
-				return NotFound();
+            var employee = await _EmployeesData.FindAsync(id.Value); //_EmployeesData.Get(id.Value);
 
-			var employee = _EmployeesData.Get(id.Value);
+            if (employee is null)
+                return NotFound();
 
-			if (employee is null)
-				return NotFound();
+            return View(employee.ToViewModel());
+        }
 
-			return View(employee);
-		}
+        #region Edit
+        [Authorize(Roles = Role.Administrators)]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id is null) // If we adding new employee.
+                return View(new EmployeeViewModel()); //Fill the empty ViewModel.
 
-		//public IActionResult Add() => View(); // in /Edit/[id = null].
+            var employee = await _EmployeesData.FindAsync(id.Value);
+            if (employee is null)
+                return NotFound();
+            return View(employee.ToViewModel());
+        }
 
-		#region Edit
-		[Authorize(Roles = Role.Administrators)]
-		public IActionResult Edit(int? id)
-		{
-			if (id is null) // If we adding new employee.
-				return View(new EmployeeViewModel()); //Fill the empty ViewModel.
+        [HttpPost]
+        [Authorize(Roles = Role.Administrators)]
+        public async Task<IActionResult> Edit(EmployeeViewModel viewModel)
+        {
+            if(!ModelState.IsValid)
+                return View(viewModel);
 
-			var employee = _EmployeesData.Get(id.Value);
-			if (employee is null)
-				return NotFound();
-			EmployeeViewModel viewModel = new EmployeeViewModel {
-				Name = employee.Name,
-				Surname = employee.Surname,
-				Patronymic = employee.Patronymic,
-				Age = employee.Age,
-				Id = employee.Id,
-				Position = employee.Position,
-				Score = employee.Score,
-			};
-			return View(viewModel);
-		}
+            Employee employee = new Employee
+            {
+                Name = viewModel.Name,
+                Surname = viewModel.Surname,
+                Patronymic = viewModel.Patronymic,
+                Age = viewModel.Age,
+                Id = viewModel.Id,
+                Position = Enum.Parse<EmployeePositions>(viewModel.Position),
+                Score = viewModel.Score,
+            };
 
-		[HttpPost]
-		[Authorize(Roles = Role.Administrators)]
-		public IActionResult Edit(EmployeeViewModel viewModel)
-		{
-			Employee employee = new Employee {
-				Name = viewModel.Name,
-				Surname = viewModel.Surname,
-				Patronymic = viewModel.Patronymic,
-				Age = viewModel.Age,
-				Id = viewModel.Id,
-				Position = viewModel.Position,
-				Score = viewModel.Score,
-			};
+            if (employee.Id == 0) // If we adding new employee.
+                _EmployeesData.Add(employee);
+            else
+                _EmployeesData.Update(employee);
 
-			if (employee.Id == 0) // If we adding new employee.
-				_EmployeesData.Add(employee);
-			else
-				_EmployeesData.Update(employee);
+            await _db.SaveChangesAsync();
 
-			SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
 
-			return RedirectToAction(nameof(Index));
-		}
+        #endregion
 
-		#endregion
+        #region Remove actions
+        [Authorize(Roles = Role.Administrators)]
+        public async Task<IActionResult> Remove(int id)
+        {
+            if (id < 0)
+                return BadRequest();
 
-		#region Remove actions
-		[Authorize(Roles = Role.Administrators)]
-		public IActionResult Remove(int id)
-		{
-			if (id < 0)
-				return BadRequest();
+            var employee = await _EmployeesData.FindAsync(id);
+            if (employee is null)
+                return NotFound();
 
-			var employee = _EmployeesData.Get(id);
-			if (employee is null)
-				return NotFound();
+            return View(employee.ToViewModel());
+        }
 
-			var vm = new EmployeeViewModel {
-				Name = employee.Name,
-				Surname = employee.Surname,
-				Patronymic = employee.Patronymic,
-				Age = employee.Age,
-				Id = employee.Id,
-				Position = employee.Position,
-				Score = employee.Score,
-			};
+        [HttpPost]
+        [Authorize(Roles = Role.Administrators)]
+        public async Task<IActionResult> Remove(EmployeeViewModel vm)
+        {
+            _EmployeesData.Remove(new Employee { Id = vm.Id });
 
-			return View(vm);
-		}
+            await _db.SaveChangesAsync();
 
-		[HttpPost]
-		[Authorize(Roles = Role.Administrators)]
-		public IActionResult RemoveConfirmed(int id)
-		{
-			_EmployeesData.Remove(_EmployeesData.Get(id));
+            return RedirectToAction(nameof(Index));
+        }
 
-			SaveChanges();
-
-			return RedirectToAction(nameof(Index));
-		}
-
-		#endregion
-	}
+        #endregion
+    }
 }

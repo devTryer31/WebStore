@@ -1,43 +1,63 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Threading.Tasks;
 using WebStore.Domain;
+using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Extensions;
+using WebStore.Infrastructure.Utils.Pagination;
 using WebStore.Services.Interfaces;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
-	public class CatalogController : Controller
-	{
-		private readonly IProductsAndBrandsLiteRepository _ProductsAndBrands;
+    public class CatalogController : Controller
+    {
+        private readonly IProductsAndBrandsLiteRepository _ProductsAndBrands;
+        private readonly UserManager<User> _userManager;
 
-		public CatalogController(IProductsAndBrandsLiteRepository productsAndBrands)
-		{
-			_ProductsAndBrands = productsAndBrands;
-		}
+        public CatalogController(IProductsAndBrandsLiteRepository productsAndBrands, UserManager<User> userManager)
+        {
+            _ProductsAndBrands = productsAndBrands;
+            _userManager = userManager;
+        }
 
-		public IActionResult Index(int? sectionId, int? brandId)
-		{
-			ProductsFilter filter = new()
-			{
-				SectionId = sectionId,
-				BrandId = brandId
-			};
+        public async Task<IActionResult> Index(int? sectionId, int? brandId, int page = 1)//TODO: Equal with HomeController.Index method
+        {
+            ProductsFilter filter = new()
+            {
+                SectionId = sectionId,
+                BrandId = brandId,
+            };
 
-			var viewProducts = _ProductsAndBrands.GetProducts(filter)
-				.ToViewEnumerable().Take(12); //TODO: Paginate.
+            var filtered = _ProductsAndBrands.GetProducts(filter).ToViewEnumerable().ToList();
+            var user = await _userManager.Users.Include(u => u.FavoriteProducts)
+                .FirstOrDefaultAsync(u => u.UserName == HttpContext.User.Identity.Name);
 
-			return View(viewProducts);
-		}
+            if (user is not null)
+                foreach (var product in filtered)
+                {
+                    if (user.FavoriteProducts.Any(p => p.Id == product.Id))
+                        product.IsUserFavorite = true;
+                }
 
-		public IActionResult Details(int id)
-		{
-			var product = _ProductsAndBrands.GetProductById(id);
+            Paginator<ProductViewModel> paginator = new(filtered, filter.CountOnPage)
+            {
+                CurrentPage = page
+            };
 
-			if (product is null)
-				return NotFound();
+            return View(paginator);
+        }
 
-			return View(product.ToView());
-		}
-	}
+        public IActionResult Details(int id)
+        {
+            var product = _ProductsAndBrands.GetProductById(id);
+
+            if (product is null)
+                return NotFound();
+
+            return View(product.ToView());
+        }
+    }
 }

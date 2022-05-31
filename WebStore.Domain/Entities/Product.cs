@@ -1,7 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using WebStore.Domain.Entities.Base;
 using WebStore.Domain.Entities.Base.Interfaces;
+using WebStore.Domain.Entities.Identity;
 
 namespace WebStore.Domain.Entities
 {
@@ -23,5 +25,7 @@ namespace WebStore.Domain.Entities
 
 		[Column(TypeName = "decimal(18,2)")]
 		public decimal Price { get; set; }
-	}
+
+        public ICollection<User> UsersMarkedFavorite { get; set; }
+    }
 }

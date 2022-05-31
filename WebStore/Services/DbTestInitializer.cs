@@ -55,17 +55,32 @@ namespace WebStore.Services
                 throw;
             }
 
+            try
+            {
+                await InitializeEmployeesAsync();
+            }
+            catch (Exception e)
+            {
+                _Logger.LogError(e, "Error while InitializeEmployeesAsync.");
+                throw;
+            }
+        }
 
+        private async Task InitializeEmployeesAsync()
+        {
+            if(!_Db.Employees.Any())
+                await _Db.Employees.AddRangeAsync(TestDataService.Employees);
+            await _Db.SaveChangesAsync();
         }
 
         private async Task InitializeProductsAsync()
         {
             if (!_Db.Brands.Any())
-                _Db.Brands.AddRange(TestDataService.Brands);
+                await _Db.Brands.AddRangeAsync(TestDataService.Brands);
             if (!_Db.ProductSections.Any())
-                _Db.ProductSections.AddRange(TestDataService.ProductSections);
+                await _Db.ProductSections.AddRangeAsync(TestDataService.ProductSections);
             if (!_Db.Products.Any())
-                _Db.Products.AddRange(TestDataService.Products);
+                await _Db.Products.AddRangeAsync(TestDataService.Products);
 
             await _Db.SaveChangesAsync();
         }

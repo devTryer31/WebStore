@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebStore.DAL.Context;
 
 namespace WebStore.DAL.Migrations
 {
     [DbContext(typeof(WebStoreDb))]
-    partial class WebStoreDbModelSnapshot : ModelSnapshot
+    [Migration("20220522151914_Employee")]
+    partial class Employee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -121,21 +123,6 @@ namespace WebStore.DAL.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("ProductUser", b =>
-                {
-                    b.Property<int>("FavoriteProductsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersMarkedFavoriteId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("FavoriteProductsId", "UsersMarkedFavoriteId");
-
-                    b.HasIndex("UsersMarkedFavoriteId");
-
-                    b.ToTable("ProductUser");
                 });
 
             modelBuilder.Entity("WebStore.Domain.Entities.Brand", b =>
@@ -444,21 +431,6 @@ namespace WebStore.DAL.Migrations
                     b.HasOne("WebStore.Domain.Entities.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ProductUser", b =>
-                {
-                    b.HasOne("WebStore.Domain.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("FavoriteProductsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebStore.Domain.Entities.Identity.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersMarkedFavoriteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

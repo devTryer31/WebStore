@@ -7,98 +7,99 @@ using WebStore.ViewModels.Identity;
 
 namespace WebStore.Controllers
 {
-	[Authorize]
-	public class AccountController : Controller
-	{
-		private const string _view = "LoginOrRegister";
+    [Authorize]
+    public class AccountController : Controller
+    {
+        private const string _view = "LoginOrRegister";
 
-		private readonly UserManager<User> _UserManager;
-		private readonly SignInManager<User> _SignInManager;
+        private readonly UserManager<User> _UserManager;
+        private readonly SignInManager<User> _SignInManager;
 
-		public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
-		{
-			_UserManager = userManager;
-			_SignInManager = signInManager;
-		}
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        {
+            _UserManager = userManager;
+            _SignInManager = signInManager;
+        }
 
-		[AllowAnonymous]
-		public IActionResult LoginOrRegister(string returnUrl) => View(_view,
-			new LoginOrRegisterViewModel { LoginViewModel = new() { ReturnUrl = returnUrl/*Request.Headers["Referer"].ToString()*/ } });
+        [AllowAnonymous]
+        public IActionResult LoginOrRegister(string returnUrl) => View(_view,
+            new LoginOrRegisterViewModel { ReturnUrl = returnUrl });
 
-		#region Register
+        #region Register
 
-		//public IActionResult Register() => View(_view, new LoginOrRegisterViewModel());
+        [HttpPost, ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(LoginOrRegisterViewModel model)
+        {
+            var loginModel = model.LoginViewModel;
+            var registerModel = model.RegisterViewModel;
+            if (registerModel.Name is null || registerModel.Password is null || registerModel.SamePassword is null ||
+                loginModel.Name is not null || loginModel.Password is not null)
+                return View(_view, model);
 
-		[HttpPost, ValidateAntiForgeryToken]
-		[AllowAnonymous]
-		public async Task<IActionResult> Register(LoginOrRegisterViewModel model)
-		{
-			var loginModel = model.LoginViewModel;
-			var registerModel = model.RegisterViewModel;
-			if (registerModel.Name is null || registerModel.Password is null || registerModel.SamePassword is null ||
-			    loginModel.Name is not null || loginModel.Password is not null)//need js lock second form while filling.
-				return View(_view, model);
+            User user = new()
+            {
+                UserName = registerModel.Name,
+            };
 
-			User user = new() {
-				UserName = registerModel.Name,
-			};
+            var registry_result = await _UserManager.CreateAsync(user, registerModel.Password);
 
-			var registry_result = await _UserManager.CreateAsync(user, registerModel.Password);
+            if (!registry_result.Succeeded)
+            {
+                foreach (var identityError in registry_result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, identityError.Description);
+                }
+                return View(_view, model);
+            }
 
-			if (!registry_result.Succeeded) {
-				foreach (var identityError in registry_result.Errors) {
-					ModelState.AddModelError(string.Empty, identityError.Description);
-				}
-				return View(_view, model);
-			}
+            await _UserManager.AddToRoleAsync(user, Role.Users);
+            await _SignInManager.SignInAsync(user, true);
+            return LocalRedirect(model.ReturnUrl ?? "/");
+        }
 
-			await _UserManager.AddToRoleAsync(user, Role.Users);
-			await _SignInManager.SignInAsync(user, true);
-			return RedirectToAction("Index", "Home");
-		}
+        #endregion
 
-		#endregion
+        #region Login
 
-		#region Login
-
-		//public IActionResult Login(string returnUrl) => View(_view,
-		//	new LoginOrRegisterViewModel { LoginViewModel = new() { ReturnUrl = returnUrl } });
-
-		[HttpPost, ValidateAntiForgeryToken]
-		[AllowAnonymous]
-		public async Task<IActionResult> Login(LoginOrRegisterViewModel model)
-		{
-			var loginModel = model.LoginViewModel;
-			var registerModel = model.RegisterViewModel;
-			if (registerModel.Name is not null || registerModel.Password is not null || registerModel.SamePassword is not null ||
-			    loginModel.Name is null || loginModel.Password is null)//need js lock second form while filling.
-				return View(_view, model);
-
-			
-
-			var login_result = await _SignInManager.PasswordSignInAsync(
-				loginModel.Name,
-				loginModel.Password,
-				loginModel.IsRememberMe,
-				false);
-
-			if (login_result.Succeeded)
-				return LocalRedirect(loginModel.ReturnUrl ?? "/"); //Check is own url or not for security.
+        [HttpPost, ValidateAntiForgeryToken]
+        [AllowAnonymous]
+        public async Task<IActionResult> Login(LoginOrRegisterViewModel model)
+        {
+            var loginModel = model.LoginViewModel;
+            var registerModel = model.RegisterViewModel;
+            if (registerModel.Name is not null || registerModel.Password is not null || registerModel.SamePassword is not null ||
+                loginModel.Name is null || loginModel.Password is null)
+            {
+                ModelState.AddModelError("LoginOrRegisterModelValueFieldError", $"Some info not correct for type {typeof(LoginOrRegisterViewModel)}.");
+                return View(_view, model);
+            }
 
 
-			ModelState.AddModelError("", "Неверный логин или пароль.");
-			return View(_view, model);
-		}
 
-		#endregion
+            var login_result = await _SignInManager.PasswordSignInAsync(
+                loginModel.Name,
+                loginModel.Password,
+                loginModel.IsRememberMe,
+                false);
 
-		public async Task<IActionResult> Logout()
-		{
-			await _SignInManager.SignOutAsync();
-			return RedirectToAction("Index", "Home");
-		}
+            if (login_result.Succeeded)
+                return LocalRedirect(model.ReturnUrl ?? "/");
 
-		[AllowAnonymous]
-		public IActionResult AccessDenied() => View();
-	}
+
+            ModelState.AddModelError("", "Неверный логин или пароль.");
+            return View(_view, model);
+        }
+
+        #endregion
+
+        public async Task<IActionResult> Logout(string returnUrl)
+        {
+            await _SignInManager.SignOutAsync();
+            return LocalRedirect(returnUrl ?? "/");
+        }
+
+        [AllowAnonymous]
+        public IActionResult AccessDenied() => View();
+    }
 }

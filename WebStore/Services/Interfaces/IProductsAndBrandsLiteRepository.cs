@@ -18,5 +18,7 @@ namespace WebStore.Services.Interfaces
 		public void AddProduct(Product source); 
 		
 		Product GetProductById(int id);
+
+		int GetProductCount();
 	}
 }
