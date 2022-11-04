@@ -1,4 +1,4 @@
-﻿namespace WebStore.UITests.EdgeBrowser
+﻿namespace WebStore.UITests.Browsers.EdgeBrowser
 {
     public class RegisterAndLoginTests : LoginOrRegisterTestBase
     {

@@ -1,4 +1,4 @@
-﻿namespace WebStore.UITests.YandexBrowser
+﻿namespace WebStore.UITests.Browsers.YandexBrowser
 {
     public class RegisterAndLoginTests : LoginOrRegisterTestBase
     {

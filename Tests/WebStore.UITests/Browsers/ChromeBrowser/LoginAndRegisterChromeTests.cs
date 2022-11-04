@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static WebStore.UITests.TestBase;
 
-namespace WebStore.UITests.ChromeBrowser
+namespace WebStore.UITests.Browsers.ChromeBrowser
 {
     public class LoginAndRegisterChromeTests : LoginOrRegisterTestBase
     {
