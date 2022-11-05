@@ -57,7 +57,7 @@ namespace WebStore.UITests.AdminPannel
             );
             Assert.Contains(//Проверка наличия картинки записи.
                 webDriver.FindElements(By.XPath(@"//*[@id=""page-inner""]/div/table/tbody/tr/td[4]/img")),
-                td => td.GetAttribute("alt") == _name
+                td => td.GetAttribute("alt") == _name && td.GetAttribute("src") == $@"http://localhost:5000/images/shop/{_img}"
             );
         }
     }

@@ -2,7 +2,7 @@
 
 namespace WebStore.UITests.Routing
 {
-    public class RoutingTestsBase : TestBase
+    public abstract class RoutingTestsBase : TestBase
     {
         public RoutingTestsBase(BrowserType browser) : base(browser)
         { }
