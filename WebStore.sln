@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore.DAL", "WebStore.DA
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{DB376E26-58C6-46D4-85E4-D8BEA8C94A97}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F86C4CE2-D064-4D62-9389-D20D91B87406}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStore.UITests", "Tests\WebStore.UITests\WebStore.UITests.csproj", "{753C064E-20C9-4C9F-952E-5C9B6ED99710}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +36,16 @@ Global
 		{DB376E26-58C6-46D4-85E4-D8BEA8C94A97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DB376E26-58C6-46D4-85E4-D8BEA8C94A97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB376E26-58C6-46D4-85E4-D8BEA8C94A97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{753C064E-20C9-4C9F-952E-5C9B6ED99710}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{753C064E-20C9-4C9F-952E-5C9B6ED99710}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{753C064E-20C9-4C9F-952E-5C9B6ED99710}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{753C064E-20C9-4C9F-952E-5C9B6ED99710}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{753C064E-20C9-4C9F-952E-5C9B6ED99710} = {F86C4CE2-D064-4D62-9389-D20D91B87406}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {13ACFD6F-4E34-45E1-871C-634C9750827B}
